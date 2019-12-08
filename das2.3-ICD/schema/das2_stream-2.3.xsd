@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+
+<!-- The data types or stream version attribute -->
+<xs:simpleType name="StreamVersion">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="2.3" />
+	</xs:restriction>	
+</xs:simpleType>
+
+<!-- The data types for properties -->
+<xs:simpleType name="PropType">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="String" />
+		<xs:enumeration value="Datum" />
+		<xs:enumeration value="boolean" />
+		<xs:enumeration value="int" />
+      <xs:enumeration value="double" />
+		<xs:enumeration value="DatumRange" />
+   </xs:restriction>
+</xs:simpleType>
+
+<!-- The names for properties, no spaces, may include special chars ".,-_:" -->
+<xs:simpleType name="PropName">
+	<xs:restriction base="xs:string">
+		<xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.-,:]+"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<!-- Single property -->
+<xs:complexType name="Prop">
+	<xs:simpleContent>
+		<xs:extension base="xs:string" >
+			<xs:attribute name="name" type="PropName" use="required" />
+			<xs:attribute name="type" type="PropType" default="String" />
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+
+<!-- Properties element -->
+<xs:complexType name="Properties">
+	<xs:sequence>
+		<xs:element name="p" type="Prop" minOccurs="1" maxOccurs="unbounded" />
+	</xs:sequence>
+</xs:complexType>
+
+
+<!-- There may be at most one properies child.  Other elements can occur as often as they
+     like.  Note that this does not cach a misspelled properites tag. -->
+<xs:element name="stream">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="properties" type="Properties" minOccurs="0" />
+			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+		</xs:sequence>
+		<xs:attribute name="version" type="StreamVersion" use="required" />
+		<xs:anyAttribute processContents="skip" />
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>
+ 
+ 
