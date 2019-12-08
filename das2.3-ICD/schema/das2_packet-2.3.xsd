@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+
+<!-- The data types for properties -->
+<xs:simpleType name="PropType">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="String" />
+		<xs:enumeration value="Datum" />
+		<xs:enumeration value="boolean" />
+		<xs:enumeration value="int" />
+      <xs:enumeration value="double" />
+		<xs:enumeration value="DatumRange" />
+   </xs:restriction>
+</xs:simpleType>
+
+<!-- The names for properties, no spaces, may include special chars ".,-_:" -->
+<xs:simpleType name="PropName">
+	<xs:restriction base="xs:string">
+		<xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.-,:]+"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<!-- Single property -->
+<xs:complexType name="Property">
+	<xs:simpleContent>
+		<xs:extension base="xs:string" >
+			<xs:attribute name="name" type="PropName" use="required" />
+			<xs:attribute name="type" type="PropType" default="String" />
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+<!-- Plane Names -->
+<xs:simpleType name="PlaneName">
+	<xs:restriction base="xs:string">
+		<xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.]+"/>
+   </xs:restriction>
+</xs:simpleType>
+
+<!-- Value Types -->
+<xs:simpleType name="StorageType">
+	<xs:restriction base="xs:string">
+      <xs:pattern 
+value="sun_real[48]|little_endian_real[48]|ascii[1-9][0-9]*|time[1-9][0-9]*" />
+   </xs:restriction>
+</xs:simpleType>
+
+
+<!-- Single Value Per Row Plane -->
+<xs:complexType name="OneValPerRow">
+	<xs:sequence>
+		<xs:element name="p" type="Property" minOccurs="0" maxOccurs="unbounded"/>
+		<xs:element name="extend" type="Extension" minOccurs="0" maxOccurs="unbounded" />
+	</xs:sequence>
+	<xs:attribute name="name" type="PlaneName" use="required" />
+	<xs:attribute name="type" type="StorageType"  use="required" />
+	<xs:attribute name="units" type="xs:token"  use="required" />
+</xs:complexType>
+
+<!-- Multi Value Per Row, Spanning 1 Coordinate -->
+<xs:complexType name="MultiPerRowSpanX">
+	<xs:complexContent>
+		<xs:extension base="OneValPerRow">
+			<xs:attribute name="nitems" type="xs:positiveInteger" />
+	
+			<!-- At least one set of offset units is required -->
+			<xs:attribute name="xUnits" type="xs:token" />
+			<xs:attribute name="xOffsetMin" type="xs:double" />
+			<xs:attribute name="xOffsetInterval" type="xs:double" />
+			
+			<!-- The regex for scientific notation is looooong, test at a higher level -->
+			<xs:attribute name="xOffsets" type="xs:string" />
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+<!-- Multi Value Per Row, Spanning 2 Coordinates -->
+<xs:complexType name="MultiPerRowSpanXY">
+	<xs:complexContent>
+		<xs:extension base="MultiPerRowSpanX">
+			<xs:attribute name="yUnits" type="xs:token"/>
+			<xs:attribute name="yOffsetMin" type="xs:double" />
+			<xs:attribute name="yOffsetInterval" type="xs:double" />
+			<xs:attribute name="yOffsets" type="xs:string" />	
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+
+<!-- Multi Value Per Row, Spanning 3 Coordinates -->
+<xs:complexType name="MultiPerRowSpanXYZ">
+	<xs:complexContent>
+		<xs:extension base="MultiPerRowSpanXY">
+			<xs:attribute name="zUnits" type="xs:token"/>
+			<xs:attribute name="zOffsetMin" type="xs:double" />
+			<xs:attribute name="zOffsetInterval" type="xs:double" />
+			<xs:attribute name="zOffsets" type="xs:string" />	
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+
+<!-- Extension Element -->
+<xs:complexType name="Extension">
+	<xs:sequence>
+		<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+	</xs:sequence>
+	<xs:attribute name="name" type="PropName" use="required" />
+	<xs:anyAttribute processContents="skip" />
+</xs:complexType>
+
+<xs:element name="packet">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="x" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="xscan" type="MultiPerRowSpanX" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="y" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="yscan" type="MultiPerRowSpanXY" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="z" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="zscan" type="MultiPerRowSpanXYZ" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="extend" type="Extension" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+
+</xs:schema>

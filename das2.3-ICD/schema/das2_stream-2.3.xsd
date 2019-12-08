@@ -28,7 +28,7 @@
 </xs:simpleType>
 
 <!-- Single property -->
-<xs:complexType name="Prop">
+<xs:complexType name="Property">
 	<xs:simpleContent>
 		<xs:extension base="xs:string" >
 			<xs:attribute name="name" type="PropName" use="required" />
@@ -38,11 +38,13 @@
 </xs:complexType>
 
 
-<!-- Properties element -->
-<xs:complexType name="Properties">
+<!-- Extension Element -->
+<xs:complexType name="Extension">
 	<xs:sequence>
-		<xs:element name="p" type="Prop" minOccurs="1" maxOccurs="unbounded" />
+		<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
 	</xs:sequence>
+	<xs:attribute name="name" type="PropName" use="required" />
+	<xs:anyAttribute processContents="skip" />
 </xs:complexType>
 
 
@@ -51,8 +53,8 @@
 <xs:element name="stream">
 	<xs:complexType>
 		<xs:sequence>
-			<xs:element name="properties" type="Properties" minOccurs="0" />
-			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+			<xs:element name="p" type="Property" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="extend" type="Extension" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 		<xs:attribute name="version" type="StreamVersion" use="required" />
 		<xs:anyAttribute processContents="skip" />
