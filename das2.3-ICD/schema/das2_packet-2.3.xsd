@@ -30,6 +30,7 @@
 	<xs:restriction base="xs:string">
 		<xs:enumeration value="offset" />
 		<xs:enumeration value="width" />
+		<xs:enumeration value="set" />
 	</xs:restriction>
 </xs:simpleType>
 
@@ -96,7 +97,7 @@ value="sun_real[48]|little_endian_real[48]|ascii[1-9][0-9]*|time[1-9][0-9]*" />
 		</xs:extension>
 	</xs:simpleContent>
 	
-	<xs:attribute name="role" type="RoleInAdjustment" default="offset"/>
+	<xs:attribute name="role" type="RoleInAdjustment" default="set"/>
 	<xs:attribute name="units" type="xs:token" />
 	<xs:attribute name="min" type="xs:double" />
 	<xs:attribute name="max" type="xs:double" />
