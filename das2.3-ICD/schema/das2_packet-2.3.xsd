@@ -3,53 +3,45 @@
 
 <!-- The data types for properties -->
 <xs:simpleType name="PropType">
-	<xs:restriction base="xs:string">
-		<xs:enumeration value="String" />
-		<xs:enumeration value="Datum" />
-		<xs:enumeration value="boolean" />
-		<xs:enumeration value="int" />
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="String" />
+    <xs:enumeration value="Datum" />
+    <xs:enumeration value="boolean" />
+    <xs:enumeration value="int" />
       <xs:enumeration value="double" />
-		<xs:enumeration value="DatumRange" />
+    <xs:enumeration value="DatumRange" />
    </xs:restriction>
 </xs:simpleType>
 
 <!-- The purposes for values -->
 <xs:simpleType name="RoleInReference">
-	<xs:restriction base="xs:string">
-		<xs:enumeration value="min" />
-		<xs:enumeration value="max" />
-		<xs:enumeration value="center" />
-		<xs:enumeration value="width" />
-		<xs:enumeration value="std_dev" />
-		<xs:enumeration value="min_error" />
-		<xs:enumeration value="max_error" />		
-	</xs:restriction>
-</xs:simpleType>
-
-<xs:simpleType name="RoleInAdjustment">
-	<xs:restriction base="xs:string">
-		<xs:enumeration value="offset" />
-		<xs:enumeration value="width" />
-		<xs:enumeration value="set" />
-	</xs:restriction>
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="min" />
+    <xs:enumeration value="max" />
+    <xs:enumeration value="center" />
+    <xs:enumeration value="width" />
+    <xs:enumeration value="std_dev" />
+    <xs:enumeration value="min_error" />
+    <xs:enumeration value="max_error" />    
+  </xs:restriction>
 </xs:simpleType>
 
 
 <!-- The names for properties, no spaces, may include special chars ".,-_:" -->
 <xs:simpleType name="PropName">
-	<xs:restriction base="xs:string">
-		<xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.-,:]+"/>
-	</xs:restriction>
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.-,:]+"/>
+  </xs:restriction>
 </xs:simpleType>
 
 <!-- Single property -->
 <xs:complexType name="Property">
-	<xs:simpleContent>
-		<xs:extension base="xs:string" >
-			<xs:attribute name="name" type="PropName" use="required" />
-			<xs:attribute name="type" type="PropType" default="String" />
-		</xs:extension>
-	</xs:simpleContent>
+  <xs:simpleContent>
+    <xs:extension base="xs:string" >
+      <xs:attribute name="name" type="PropName" use="required" />
+      <xs:attribute name="type" type="PropType" default="String" />
+    </xs:extension>
+  </xs:simpleContent>
 </xs:complexType>
 
 <!-- Properties grouping -->
@@ -61,14 +53,14 @@
 
 <!-- Plane Names -->
 <xs:simpleType name="PlaneName">
-	<xs:restriction base="xs:string">
-		<xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.]+"/>
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.]+"/>
    </xs:restriction>
 </xs:simpleType>
 
 <!-- Value Types -->
 <xs:simpleType name="StorageType">
-	<xs:restriction base="xs:string">
+  <xs:restriction base="xs:string">
       <xs:pattern 
 value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_int8|ascii[1-9][0-9]*|time[1-9][0-9]*" />
    </xs:restriction>
@@ -77,96 +69,93 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 
 <!-- Single Value Per Row Plane -->
 <xs:complexType name="OneValPerRow">
-	<xs:sequence>
-		<xs:element name="properties" type="Properties" minOccurs="0"/>
-		<xs:any minOccurs="0" maxOccurs="unbounded" />
-	</xs:sequence>
-	<xs:attribute name="name" type="PlaneName" use="required" />
-	<xs:attribute name="type" type="StorageType"  use="required" />
-	<xs:attribute name="units" type="xs:token"  use="required" />
-	<xs:attribute name="role" type="RoleInReference"  default="center" />
+  <xs:sequence>
+    <xs:element name="properties" type="Properties" minOccurs="0"/>
+    <xs:any minOccurs="0" maxOccurs="unbounded" />
+  </xs:sequence>
+  <xs:attribute name="name" type="PlaneName" use="required" />
+  <xs:attribute name="type" type="StorageType"  use="required" />
+  <xs:attribute name="units" type="xs:token"  use="required" />
+  <xs:attribute name="role" type="RoleInReference"  default="center" />
 </xs:complexType>
 
+<xs:simpleType name="Array">
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[0-9\+-,\.eE\s]*" />
+    <xs:whiteSpace value="collapse" />
+  </xs:restriction>
+</xs:simpleType>
 
+<!-- The regex for scientific notation is looooong, just make sure
+     illegal characters are not present -->       
 <xs:complexType name="Offset">
-	<xs:simpleContent>
-		<xs:extension base="xs:string" >
-		<!-- The regex for scientific notation is looooong, just make sure
-		     illegal characters are not present -->
-			<xs:pattern value="[0-9\+-,\.eE\s]*" />
-		</xs:extension>
-	</xs:simpleContent>
-	
-	<xs:attribute name="role" type="RoleInAdjustment" default="set"/>
-	<xs:attribute name="units" type="xs:token" />
-	<xs:attribute name="min" type="xs:double" />
-	<xs:attribute name="max" type="xs:double" />
-	<xs:attribute name="interval" type="xs:double" />
+  <xs:simpleContent>
+    <xs:extension base="Array" >
+      <xs:attribute name="units" type="xs:token" use="required" />
+      <xs:attribute name="min" type="xs:double" />
+      <xs:attribute name="max" type="xs:double" />
+      <xs:attribute name="interval" type="xs:double" />
+    </xs:extension>
+  </xs:simpleContent>  
 </xs:complexType>
 
 <!-- Multi Value Per Row, Spanning 1 Coordinate -->
 <xs:complexType name="MultiPerRowSpanX">
-	<xs:complexContent>
-		<xs:sequence>
-			<xs:element name="xoffset" type="Offset" />
-			<xs:element name="properties" type="Properties" minOccurs="0"/>
-			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
-		</xs:sequence>
-		<xs:attribute name="name" type="PlaneName" use="required" />
-		<xs:attribute name="type" type="StorageType"  use="required" />
-		<xs:attribute name="units" type="xs:token"  use="required" />
-		<xs:attribute name="nitems" type="xs:positiveInteger" />
-	</xs:complexContent>
+  <xs:sequence>
+    <xs:element name="xoffset" type="Offset" />
+    <xs:element name="properties" type="Properties" minOccurs="0"/>
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+  </xs:sequence>
+  <xs:attribute name="name" type="PlaneName" use="required" />
+  <xs:attribute name="type" type="StorageType"  use="required" />
+  <xs:attribute name="units" type="xs:token"  use="required" />
+  <xs:attribute name="nitems" type="xs:positiveInteger" />
 </xs:complexType>
 
 <!-- Multi Value Per Row, Spanning 2 Coordinates -->
 <xs:complexType name="MultiPerRowSpanXY">
-	<xs:complexContent>
-		<xs:sequence>
-			<xs:element name="xoffset" type="Offset" />
-			<xs:element name="yoffset" type="Offset" />
-			<xs:element name="properties" type="Properties" minOccurs="0"/>
-			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
-		</xs:sequence>
-		<xs:attribute name="name" type="PlaneName" use="required" />
-		<xs:attribute name="type" type="StorageType"  use="required" />
-		<xs:attribute name="units" type="xs:token"  use="required" />
-		<xs:attribute name="nitems" type="xs:positiveInteger" />	
-	</xs:complexContent>
+  <xs:sequence>
+    <xs:element name="xoffset" type="Offset" />
+    <xs:element name="yoffset" type="Offset" />
+    <xs:element name="properties" type="Properties" minOccurs="0"/>
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+  </xs:sequence>
+  <xs:attribute name="name" type="PlaneName" use="required" />
+  <xs:attribute name="type" type="StorageType"  use="required" />
+  <xs:attribute name="units" type="xs:token"  use="required" />
+  <xs:attribute name="nitems" type="xs:positiveInteger" />  
 </xs:complexType>
 
 
 <!-- Multi Value Per Row, Spanning 3 Coordinates -->
 <xs:complexType name="MultiPerRowSpanXYZ">
-	<xs:complexContent>
-		<xs:sequence>
-			<xs:element name="xoffset" type="Offset" />
-			<xs:element name="yoffset" type="Offset" />
-			<xs:element name="zoffset" type="Offset" />
-			<xs:element name="properties" type="Properties" minOccurs="0"/>
-			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
-		</xs:sequence>
-		<xs:attribute name="name" type="PlaneName" use="required" />
-		<xs:attribute name="type" type="StorageType"  use="required" />
-		<xs:attribute name="units" type="xs:token"  use="required" />
-		<xs:attribute name="nitems" type="xs:positiveInteger" />	
-	</xs:complexContent>
+  <xs:sequence>
+    <xs:element name="xoffset" type="Offset" />
+    <xs:element name="yoffset" type="Offset" />
+    <xs:element name="zoffset" type="Offset" />
+    <xs:element name="properties" type="Properties" minOccurs="0"/>
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+  </xs:sequence>
+  <xs:attribute name="name" type="PlaneName" use="required" />
+  <xs:attribute name="type" type="StorageType"  use="required" />
+  <xs:attribute name="units" type="xs:token"  use="required" />
+  <xs:attribute name="nitems" type="xs:positiveInteger" />  
 </xs:complexType>
 
 
 <xs:element name="packet">
-	<xs:complexType>
-		<xs:sequence>
-			<xs:element name="x" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="xscan" type="MultiPerRowSpanX" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="y" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="yscan" type="MultiPerRowSpanXY" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="z" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="zscan" type="MultiPerRowSpanXYZ" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="w" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
-		</xs:sequence>
-	</xs:complexType>
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="x" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="xscan" type="MultiPerRowSpanX" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="y" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="yscan" type="MultiPerRowSpanXY" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="z" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="zscan" type="MultiPerRowSpanXYZ" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="w" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+    </xs:sequence>
+  </xs:complexType>
 </xs:element>
 
 
