@@ -40,18 +40,8 @@
 <!-- Properties grouping -->
 <xs:complexType name="Properties">
   <xs:sequence>
-    <xs:element name="p" type="Property" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="p" type="Property" minOccurs="1" maxOccurs="unbounded"/>
   </xs:sequence>
-</xs:complexType>
-
-
-<!-- Extension Element -->
-<xs:complexType name="Extension">
-	<xs:sequence>
-		<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
-	</xs:sequence>
-	<xs:attribute name="name" type="PropName" use="required" />
-	<xs:anyAttribute processContents="skip" />
 </xs:complexType>
 
 

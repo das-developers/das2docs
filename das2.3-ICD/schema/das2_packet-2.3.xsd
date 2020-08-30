@@ -70,7 +70,7 @@
 <xs:simpleType name="StorageType">
 	<xs:restriction base="xs:string">
       <xs:pattern 
-value="sun_real[48]|little_endian_real[48]|ascii[1-9][0-9]*|time[1-9][0-9]*" />
+value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_int8|ascii[1-9][0-9]*|time[1-9][0-9]*" />
    </xs:restriction>
 </xs:simpleType>
 
@@ -88,7 +88,7 @@ value="sun_real[48]|little_endian_real[48]|ascii[1-9][0-9]*|time[1-9][0-9]*" />
 </xs:complexType>
 
 
-<xs:complexType name="Adjustments">
+<xs:complexType name="Offset">
 	<xs:simpleContent>
 		<xs:extension base="xs:string" >
 		<!-- The regex for scientific notation is looooong, just make sure
@@ -108,7 +108,7 @@ value="sun_real[48]|little_endian_real[48]|ascii[1-9][0-9]*|time[1-9][0-9]*" />
 <xs:complexType name="MultiPerRowSpanX">
 	<xs:complexContent>
 		<xs:sequence>
-			<xs:element name="xadjust" type="Adjustments" />
+			<xs:element name="xoffset" type="Offset" />
 			<xs:element name="properties" type="Properties" minOccurs="0"/>
 			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
 		</xs:sequence>
@@ -123,8 +123,8 @@ value="sun_real[48]|little_endian_real[48]|ascii[1-9][0-9]*|time[1-9][0-9]*" />
 <xs:complexType name="MultiPerRowSpanXY">
 	<xs:complexContent>
 		<xs:sequence>
-			<xs:element name="xadjust" type="Adjustments" />
-			<xs:element name="yadjust" type="Adjustments" />
+			<xs:element name="xoffset" type="Offset" />
+			<xs:element name="yoffset" type="Offset" />
 			<xs:element name="properties" type="Properties" minOccurs="0"/>
 			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
 		</xs:sequence>
@@ -140,9 +140,9 @@ value="sun_real[48]|little_endian_real[48]|ascii[1-9][0-9]*|time[1-9][0-9]*" />
 <xs:complexType name="MultiPerRowSpanXYZ">
 	<xs:complexContent>
 		<xs:sequence>
-			<xs:element name="xadjust" type="Adjustments" />
-			<xs:element name="yadjust" type="Adjustments" />
-			<xs:element name="zadjust" type="Adjustments" />
+			<xs:element name="xoffset" type="Offset" />
+			<xs:element name="yoffset" type="Offset" />
+			<xs:element name="zoffset" type="Offset" />
 			<xs:element name="properties" type="Properties" minOccurs="0"/>
 			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
 		</xs:sequence>
@@ -163,6 +163,7 @@ value="sun_real[48]|little_endian_real[48]|ascii[1-9][0-9]*|time[1-9][0-9]*" />
 			<xs:element name="yscan" type="MultiPerRowSpanXY" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="z" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="zscan" type="MultiPerRowSpanXYZ" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="w" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
 		</xs:sequence>
 	</xs:complexType>
