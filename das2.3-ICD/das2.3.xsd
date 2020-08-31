@@ -150,7 +150,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <!-- Multi Value Per Row, Spanning 2 Coordinates -->
 <xs:complexType name="MultiPerRowSpanXY">
   <xs:sequence>
-    <xs:element name="xoffset" type="Offset" />
+    <xs:element name="xoffset" type="Offset" minOccurs="0" />
     <xs:element name="yoffset" type="Offset" />
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
@@ -165,8 +165,8 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <!-- Multi Value Per Row, Spanning 3 Coordinates -->
 <xs:complexType name="MultiPerRowSpanXYZ">
   <xs:sequence>
-    <xs:element name="xoffset" type="Offset" />
-    <xs:element name="yoffset" type="Offset" />
+    <xs:element name="xoffset" type="Offset" minOccurs="0" />
+    <xs:element name="yoffset" type="Offset" minOccurs="0" />
     <xs:element name="zoffset" type="Offset" />
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
