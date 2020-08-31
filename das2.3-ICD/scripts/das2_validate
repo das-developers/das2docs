@@ -8,9 +8,9 @@ try:
 except ImportError:
     from io import StringIO       # Python 3
 	 
-g_sStrSchema = './schema/das2_stream-2.3.xsd'
-g_sPktSchema = './schema/das2_packet-2.3.xsd'
-g_sCmtSchema = './schema/das2_comment-2.3.xsd'
+g_sSchema = './schema/das2.3.xsd'
+#g_sPktSchema = './schema/das2_packet-2.3.xsd'
+#g_sCmtSchema = './schema/das2_comment-2.3.xsd'
 
 # ########################################################################### #
 def getHdr(fIn, nOffset):
@@ -31,13 +31,13 @@ def getHdr(fIn, nOffset):
 			
 	except UnicodeDecodeError:
 		print("Packet ID not readable as UTF-8 text at byte offset %d"%(nOffset - 4))
-		return (None, None, nOffset)
+		return (None, None, nOffset, None)
 	
 	x6 = fIn.read(6)
 	nOffset += 6
 	if len(x6) != 6:
 		print("Could not get header packet length at byte offset %d"%(nOffest - 6 ))
-		return (sPktId, None, nOffset)
+		return (sPktId, None, nOffset, sPktType)
 			
 	nLen = 0
 	try:
@@ -45,14 +45,14 @@ def getHdr(fIn, nOffset):
 	except ValueError:
 		print("Could not convert header packet length string to an integer at byte offset %d"%(
 		       nOffset - 6))
-		return (sPktId, None, nOffset)
+		return (sPktId, None, nOffset, sPktType)
 		
 	if nLen < 8:
 		print("Packet length (%d) is to short to be a legal stream "%nLen +\
 		      "or packet descriptor at byte offset %d"%nOffset)
-		return (sPktId, None, nOffset)
+		return (sPktId, None, nOffset, sPktType)
 	
-	print("Reading %d byte %s header packet"%(nLen, sPktType))
+	#print("Reading %d byte %s header packet"%(nLen, sPktType))
 	xDoc = fIn.read(nLen)
 	sDoc = None
 	try:
@@ -60,70 +60,50 @@ def getHdr(fIn, nOffset):
 		#print(sDoc)
 	except UnicodeDecodeError:
 		print("%s header starting at byte %d is not valid UTF-8 text"(sPktType, nOffset))
-		return (sPktId, None, nOffset)
+		return (sPktId, None, nOffset, sPktType)
 	
-	return (sPktId, sDoc, nOffset)
+	return (sPktId, sDoc, nOffset, sPktType)
 
 
 # ########################################################################### #
 def main(lArgs):
-		
-	fStrSchema = open(g_sStrSchema)
-	fPktSchema = open(g_sPktSchema)
-	fCmtSchema = open(g_sCmtSchema)
 
-	str_schema_doc = etree.parse(fStrSchema)
-	str_schema = etree.XMLSchema(str_schema_doc)
+
+	print("Reading XSD: %s"%g_sSchema)
+	fSchema = open(g_sSchema)
+	schema_doc = etree.parse(fSchema)
+	schema = etree.XMLSchema(schema_doc)
 	
-	pkt_schema_doc = etree.parse(fPktSchema)
-	pkt_schema = etree.XMLSchema(pkt_schema_doc)
-	
-	cmt_schema_doc = etree.parse(fCmtSchema)
-	cmt_schema = etree.XMLSchema(cmt_schema_doc)
-	
+	print("Validating: %s"%lArgs[1])
 	fIn = open(lArgs[1], 'rb')
 	
-	sPktId, sStrDoc, nOffset = getHdr(fIn, 0)
-	if sStrDoc == None: return 7
-	fPkt = StringIO(sStrDoc)
-	str_doc = etree.parse(fPkt)
+	while True:
 	
-	bGood = False
-	try:
-		str_schema.assertValid(str_doc)
-		bGood = True
-	except etree.DocumentInvalid as e:
-		print("In <stream> header: %s" %str(e))
-		return 5
-	
-	if bGood:
-		print("%s validated against schema %s."%(lArgs[0], g_sStrSchema))
+		sPktId, sDoc, nOffset, sType = getHdr(fIn, 0)
+		if sDoc == None: 
+			break
+			
+		fPkt = StringIO(sDoc)
+		doc = etree.parse(fPkt)
 		
-	else:
-		print("%s failed to validate against schema %s."%(lArgs[0], g_sSchema))
-		return 7
-		
-		
-	sPktId, sPktDoc, nOffset = getHdr(fIn, nOffset)
-	if sPktDoc == None: return 13
+		bGood = False
+		try:
+			schema.assertValid(doc)
+			bGood = True
+		except etree.DocumentInvalid as e:
+			print("In %s header: %s" %(sType, str(e)))
+			return 5
 	
-	fPkt = StringIO(sPktDoc)
-	pkt_doc = etree.parse(fPkt)
-	
-	bGood = False
-	try:
-		pkt_schema.assertValid(pkt_doc)
-		bGood = True
-	except etree.DocumentInvalid as e:
-		print("In <packet> [%s] header: %s" %(sPktId, str(e)))
-		return 5
-	
-	if bGood:
-		print("%s validated against schema %s."%(lArgs[0], g_sPktSchema))
+		if bGood:
+			print("%s: <%s> [OKAY]"%(lArgs[1], sType))
+			
+		else:
+			print("%s: <%s>  [FAILED]"%(lArgs[1], sType))
+			return 7
 		
-	else:
-		print("%s failed to validate against schema %s."%(lArgs[0], g_sSchema))
-		return 7
+	
+	print("%s: validates as a das2.3 stream"%lArgs[1])
+	return 0	
 	
 if __name__ == "__main__":
 	sys.exit(main(sys.argv))
