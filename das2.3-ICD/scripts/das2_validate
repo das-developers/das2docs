@@ -8,66 +8,167 @@ try:
 except ImportError:
     from io import StringIO       # Python 3
 	 
-g_sSchema = './schema/das2.3.xsd'
-#g_sPktSchema = './schema/das2_packet-2.3.xsd'
-#g_sCmtSchema = './schema/das2_comment-2.3.xsd'
+g_sSchema = 'das2.3.xsd'
 
 # ########################################################################### #
-def getHdr(fIn, nOffset):
-	"""Returns (sPktId, sDoc, nOffset)"""
+class PacketReader:
+	def __init__(self, fIn):
+		self.fIn = fIn
+		self.lPktSize = [None]*100
+		self.lPktDef  = [False]*100
+		self.nOffset = 0
 
-	x4 = fIn.read(4)
-	nOffset += 4
-
-	if (nOffset == 0) and (x4 != b'[00]'):
-		print("File does not start with '[00]' does not appear to be a das2 stream")
-		return 1
-	
-	try:
-		sPktId = x4[1:3].decode("utf-8")
-		if sPktId == "00": sPktType = "stream"
-		elif sPktId in ('xx','XX'): sPktType = "comment"
-		else: sPktType = "packet"
-			
-	except UnicodeDecodeError:
-		print("Packet ID not readable as UTF-8 text at byte offset %d"%(nOffset - 4))
-		return (None, None, nOffset, None)
-	
-	x6 = fIn.read(6)
-	nOffset += 6
-	if len(x6) != 6:
-		print("Could not get header packet length at byte offset %d"%(nOffest - 6 ))
-		return (sPktId, None, nOffset, sPktType)
-			
-	nLen = 0
-	try:
-		nLen = int(x6.decode('utf-8'), 10)
-	except ValueError:
-		print("Could not convert header packet length string to an integer at byte offset %d"%(
-		       nOffset - 6))
-		return (sPktId, None, nOffset, sPktType)
+	def setDataSize(self, nPktId, nBytes):
+		if nPktId < 1 or nPktId > 99:
+			raise ValueError("Packet ID %d is invalid"%nPktid)
+		if nBytes <= 0:
+			raise ValueError("Data packet size %d is invalid"%nBytes)
 		
-	if nLen < 8:
-		print("Packet length (%d) is to short to be a legal stream "%nLen +\
-		      "or packet descriptor at byte offset %d"%nOffset)
-		return (sPktId, None, nOffset, sPktType)
+		self.lPktSize[nPktId] = nBytes
+		
+	def __iter__(self):
+		return self
 	
-	#print("Reading %d byte %s header packet"%(nLen, sPktType))
-	xDoc = fIn.read(nLen)
-	sDoc = None
-	try:
-		sDoc = xDoc.decode("utf-8")
-		#print(sDoc)
-	except UnicodeDecodeError:
-		print("%s header starting at byte %d is not valid UTF-8 text"(sPktType, nOffset))
-		return (sPktId, None, nOffset, sPktType)
+	def __next__(self):
+		x4 = self.fIn.read(4)
+		if len(x4) != 4:
+			raise StopIteration
+			
+		try:
+			nPktId = int(x4[1:3].decode('utf-8'), 10)
+		except ValueError:
+			raise ValueError("Invalid packet ID %s"%x4[1:3].decode('utf-8'))
+			
+		
+		if (nPktId < 0) or (nPktId > 99):
+			raise ValueError("Invalid packte ID %s at byte offset %s"%(
+				x4[1:3].decode('utf-8'), self.nOffset
+			))
+			
+		self.nOffset += 4			
+		
+		if self.nOffset == 4 and (x4 != b'[00]'):
+			raise ValueError("Input does not start with '[00]' does not appear to be a das2 stream")
+		
+		if x4[0:1] == b'[' and x4[3:4] == b']':
+			# In a header packet, save data as utf-8 (it already is)
+			
+			x6 = self.fIn.read(6)	
+			if len(x6) != 6:
+				raise ValueError("Pre-mature end of packet %s"%x4.decode('utf-8'))
+				
+			self.nOffset += 6
+			
+			nLen = 0
+			try:
+				nLen = int(x6.decode('utf-8'), 10)
+			except ValueError:
+				raise ValueError("Invalid header length %s for packet %s"%(
+					x6.decode('utf-8'), x4.decode('utf-8')
+				))
+				
+			if nLen < 8:
+				raise ValueError(
+					"Packet length (%d) is to short to be a legal for packet %s"%(
+					nLen, x4.decode('utf-8')
+				))
+			
+		
+			xDoc = self.fIn.read(nLen)
+			self.nOffset += nLen
+			sDoc = None
+			try:
+				sDoc = xDoc.decode("utf-8")
+			except UnicodeDecodeError:
+				ValueError("Header %s (length %d bytes) is not valid UTF-8 text"(
+					x4.decode('utf-8'), nLen
+				))
+			
+			self.lPktDef[nPktId] = True
+			
+			# Higher level parser will have to give us the length.  This is an
+			# oversight in the das2 stream format that has been around for a while.
+			# self.lPktSize = ? 
+			
+			return ('header', nPktId, sDoc)
+		
+		elif (x4[0:1] == b':') and  (x4[3:4] == b':'):
+			# In a data packet read it if we have a know length for this id
+			
+			if not self.lPktDef[nPktId]:
+				raise ValueError(
+					"Undefined data packet %s encountered at affset %d"%(
+					x4.decode('utf-8'), self.nOffset
+				))
+			
+			if self.lPktSize[nPktId] == None:
+				raise RuntimeError(
+					"Internal error, unknown length for data packet %d"%nPktId
+				)
+			
+			xData = self.fIn.read(self.lPktSize[nPktId])
+			self.nOffset += len(xData)
+			
+			if len(xData) != self.lPktSize[nPktId]:
+				raise ValueError("Premature end of packet data for id %d"%nPktId)
+			
+			return ('data', nPktId, xData)
+		
+		else:
+			raise ValueError(
+				"Expected the start of a header or data packet at offset %d"%self.nOffset
+			)
+			
+# ########################################################################### #
+def getValSz(sType):
+	"""das2 type names always end in the size, just count backwards and 
+	pull off the digits.  You have to get at least one digit
+	"""
+	sSz = ""
+	for c in reversed(sType):
+		if c.isdigit(): sSz += c
+		else: break
 	
-	return (sPktId, sDoc, nOffset, sPktType)
+	sSz = ''.join(reversed(sSz))
+	return int(sSz, 10)
 
+# ########################################################################### #
+def getDatLen(packet, nPktId):
+	"""Given a <packet> element, recurse through top children and figure 
+	out the data length"""
+	
+	nSize = 0
+	for child in packet:
+	
+		if child.tag not in ('x','y','z','w','xscan','yscan','zscan'):
+			continue
+	
+		# Get the value type
+		if 'type' not in child.attrib:
+			raise ValueError(
+				"Attribute 'type' missing for element %s in packet ID %d"%(
+				child.tag, nPktId
+			))
+			
+		nSzEa = getValSz(child.attrib['type'])
+		
+		nItems = 1
+		if child.tag.endswith('scan'):
+			if 'nitems' not in child.attrib:
+				raise ValueError(
+					"Attribute 'nitems' missing for element %s in packet ID %d"%(
+					child.tag, nPktId
+				))
+				
+			nItems = int(child.attrib['nitems'], 10)
+			
+		nSize += nItems * nSzEa
+	
+	return nSize
+			
 
 # ########################################################################### #
 def main(lArgs):
-
 
 	print("Reading XSD: %s"%g_sSchema)
 	fSchema = open(g_sSchema)
@@ -77,30 +178,47 @@ def main(lArgs):
 	print("Validating: %s"%lArgs[1])
 	fIn = open(lArgs[1], 'rb')
 	
-	while True:
+	lDatPkts = [0]*100
 	
-		sPktId, sDoc, nOffset, sType = getHdr(fIn, 0)
-		if sDoc == None: 
-			break
-			
-		fPkt = StringIO(sDoc)
-		doc = etree.parse(fPkt)
+	reader = PacketReader(fIn)
+	
+	for (sType, nPktId, xPkt) in reader:
 		
-		bGood = False
+		if sType == 'data':
+			lDatPkts[nPktId] += 1
+			continue
+								
+		fPkt = StringIO(xPkt)
+		
+		try:
+			doc = etree.parse(fPkt)
+		except etree.XMLSyntaxError as e:
+			print(xPkt)
+			print("ID: %s <%s> [FAILED]"%(nPktId, sType))
+			print(str(e))
+			return 5
+		
+		sType = doc.getroot().tag
+		
+		# Make sure it validates		
 		try:
 			schema.assertValid(doc)
-			bGood = True
 		except etree.DocumentInvalid as e:
-			print("In %s header: %s" %(sType, str(e)))
-			return 5
-	
-		if bGood:
-			print("%s: <%s> [OKAY]"%(lArgs[1], sType))
+			print("ID: %s <%s> [FAILED]"%(nPktId, sType))
+			print(str(e))
+			return 5		
 			
-		else:
-			print("%s: <%s>  [FAILED]"%(lArgs[1], sType))
-			return 7
+		# If this is a packet element, get the total length
+		if sType == 'packet':
+			nDatLen = getDatLen(doc.getroot(), nPktId)
+			reader.setDataSize(nPktId, nDatLen)
+			#print("For Packet ID %s, data size is %d"%(nPktId, nDatLen))
 		
+		print("ID: %s <%s> [OKAY]"%(nPktId, sType))
+		
+	for nPktId in range(100):
+		if lDatPkts[nPktId] != 0:
+			print("ID: %d has %d data packets [OKAY]"%(nPktId, lDatPkts[nPktId]))
 	
 	print("%s: validates as a das2.3 stream"%lArgs[1])
 	return 0	
