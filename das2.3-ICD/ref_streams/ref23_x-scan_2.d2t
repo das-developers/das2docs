@@ -12,10 +12,10 @@
   </properties>
   <custom2 name="test_extensibility" />
 </stream>
-[01]000268<packet custom3="test_extensibility" >
+[01]000270<packet custom3="test_extensibility" >
   <x name="time" type="time24" units="UTC"/>
   <xscan name="lfr_lo_e" type="ascii11" units="V m**-1" nitems="6144">
-	 <xoffset min="0.0" interval="20.0" units="μs" />
+    <xoffset min="0.0" interval="20.0" units="μs" />
   </xscan>
   <custom5 name="test_extensibility" />
 </packet>
