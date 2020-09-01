@@ -130,6 +130,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
       <xs:attribute name="min" type="xs:double" />
       <xs:attribute name="max" type="xs:double" />
       <xs:attribute name="interval" type="xs:double" />
+		<xs:attribute name="role" type="RoleInReference"  default="center" />
     </xs:extension>
   </xs:simpleContent>  
 </xs:complexType>
@@ -137,28 +138,32 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <!-- Multi Value Per Row, Spanning 1 Coordinate -->
 <xs:complexType name="MultiPerRowSpanX">
   <xs:sequence>
-    <xs:element name="xoffset" type="Offset" />
+    <xs:element name="xoffset" type="Offset" minOccurs="0"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
   </xs:sequence>
   <xs:attribute name="name" type="PlaneName" use="required" />
+  <xs:attribute name="group" type="PlaneName" />
   <xs:attribute name="type" type="StorageType"  use="required" />
   <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="nitems" type="xs:positiveInteger" />
+  <xs:attribute name="role" type="RoleInReference"  default="center" />
+  <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
 </xs:complexType>
 
 <!-- Multi Value Per Row, Spanning 2 Coordinates -->
 <xs:complexType name="MultiPerRowSpanXY">
   <xs:sequence>
     <xs:element name="xoffset" type="Offset" minOccurs="0" />
-    <xs:element name="yoffset" type="Offset" />
+    <xs:element name="yoffset" type="Offset" minOccurs="0" />
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
   </xs:sequence>
   <xs:attribute name="name" type="PlaneName" use="required" />
+  <xs:attribute name="group" type="PlaneName" />
   <xs:attribute name="type" type="StorageType"  use="required" />
   <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="nitems" type="xs:positiveInteger" />  
+  <xs:attribute name="role" type="RoleInReference"  default="center" />
+  <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
 </xs:complexType>
 
 
@@ -172,22 +177,23 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
   </xs:sequence>
   <xs:attribute name="name" type="PlaneName" use="required" />
+  <xs:attribute name="group" type="PlaneName" />
   <xs:attribute name="type" type="StorageType"  use="required" />
   <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="nitems" type="xs:positiveInteger" />  
+  <xs:attribute name="role" type="RoleInReference"  default="center" />
+  <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
 </xs:complexType>
 
 
 <xs:element name="packet">
   <xs:complexType>
     <xs:sequence>
-      <xs:element name="x" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="xscan" type="MultiPerRowSpanX" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="y" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="yscan" type="MultiPerRowSpanXY" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="z" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="zscan" type="MultiPerRowSpanXYZ" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="w" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="xref" type="OneValPerRow" minOccurs="1" maxOccurs="unbounded"/>
+		<xs:element name="yref" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+		<xs:element name="zref" type="OneValPerRow" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="ydat" type="MultiPerRowSpanX" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="zdat" type="MultiPerRowSpanXY" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="wdat" type="MultiPerRowSpanXYZ" minOccurs="0" maxOccurs="unbounded"/>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <!-- Can extend with other elements here, but they can't be from this namespace -->
         <xs:any namespace="##other" processContents="skip" />

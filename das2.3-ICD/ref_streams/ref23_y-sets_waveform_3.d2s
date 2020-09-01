@@ -11,9 +11,9 @@
     <p name="sourceId">das2_ascii</p>
   </properties>
 </stream>
-[01]046383<packet>
-  <x name="time" type="time24" units="UTC" />
-  <xscan name="lfr_lo_e" type="little_endian_real4" units="V m**-1" nitems="6144">
+[01]046384<packet>
+  <xref name="time" type="time24" units="UTC" />
+  <ydat name="lfr_lo_e" type="little_endian_real4" units="V m**-1" nitems="6144">
     <xoffset units="Î¼s"> 
          0,    20,    40,    60,    80,   100,   120,   140,   160,   180,
        200,   220,   240,   260,   280,   300,   320,   340,   360,   380,   
@@ -631,7 +631,7 @@
     122600,122620,122640,122660,122680,122700,122720,122740,122760,122780,
     122800,122820,122840,122860
     </xoffset>
-  </xscan>
+  </ydat>
 </packet>
 :01:2013-282T15:31:53.397   Ú	¬·y:·H^û·ÿŽ„·Gˆ%¸Gˆ%¸Û¿16Û¿16ÿŽ„·ÿŽ„·Z¦Ó··‚9¸…M¸·‚9¸Z¦Ó·H^û··‚9¸±–¸Ú	¬·»Ø¶H^û·›Ža¸®žu¸…M¸·‚9¸·‚9¸Gˆ%¸…M¸Z¦Ó·Gˆ%¸Gˆ%¸®žu¸›Ža¸®žu¸Œ£¸·‚9¸±–¸H^û·Z¦Ó·±–¸y:·nÍó68ý‹Ú78”ü<8ñ
 e8Ì¤8è§8Kù¸8Ì¤8á®8y8È¸š8 Ã8 Òÿ8ü9Gká8 Òÿ8

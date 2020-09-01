@@ -37,7 +37,7 @@ class PacketReader:
 		try:
 			nPktId = int(x4[1:3].decode('utf-8'), 10)
 		except ValueError:
-			raise ValueError("Invalid packet ID %s"%x4[1:3].decode('utf-8'))
+			raise ValueError("Invalid packet ID '%s'"%x4[1:3].decode('utf-8'))
 			
 		
 		if (nPktId < 0) or (nPktId > 99):
@@ -93,7 +93,8 @@ class PacketReader:
 			return ('header', nPktId, sDoc)
 		
 		elif (x4[0:1] == b':') and  (x4[3:4] == b':'):
-			# In a data packet read it if we have a know length for this id
+			# The old das2.2 packets which had no length, you dad to parse the
+			# header.
 			
 			if not self.lPktDef[nPktId]:
 				raise ValueError(
@@ -110,6 +111,36 @@ class PacketReader:
 			self.nOffset += len(xData)
 			
 			if len(xData) != self.lPktSize[nPktId]:
+				raise ValueError("Premature end of packet data for id %d"%nPktId)
+			
+			return ('data', nPktId, xData)
+
+		elif (x4[0:1] == b'|') and (x4[3:4] == b'|'):
+			# In a possibly variable length packet, read it
+			x7 = self.fIn.read(7)	
+			if len(x7) != 7:
+				raise ValueError("Pre-mature end of packet %s"%x4.decode('utf-8'))
+			
+			self.nOffset += 7
+			
+			nLen = 0
+			try:
+				nLen = int(x7[0:6].decode('utf-8'), 10)
+			except ValueError:
+				raise ValueError("Invalid data length %s for packet %s"%(
+					x6.decode('utf-8'), x4.decode('utf-8')
+				))
+				
+			if nLen < 8:
+				raise ValueError(
+					"Packet length (%d) is to short to be a legal for packet %s"%(
+					nLen, x4.decode('utf-8')
+				))
+			
+			xData = self.fIn.read(nLen)
+			self.nOffset += len(xData)
+			
+			if len(xData) != nLen:
 				raise ValueError("Premature end of packet data for id %d"%nPktId)
 			
 			return ('data', nPktId, xData)
@@ -140,7 +171,7 @@ def getDatLen(packet, nPktId):
 	nSize = 0
 	for child in packet:
 	
-		if child.tag not in ('x','y','z','w','xscan','yscan','zscan'):
+		if child.tag not in ('xref','yref','zref','ydat','zdat','wdat'):
 			continue
 	
 		# Get the value type
@@ -153,22 +184,21 @@ def getDatLen(packet, nPktId):
 		nSzEa = getValSz(child.attrib['type'])
 		
 		nItems = 1
-		if child.tag.endswith('scan'):
-			if 'nitems' not in child.attrib:
-				raise ValueError(
-					"Attribute 'nitems' missing for element %s in packet ID %d"%(
-					child.tag, nPktId
-				))
-				
-			nItems = int(child.attrib['nitems'], 10)
+		if child.tag.endswith('dat'):
+			if 'nitems' in child.attrib:
+				nItems = int(child.attrib['nitems'], 10)
 			
 		nSize += nItems * nSzEa
 	
+	#print("%d size is: %d"%(nPktId, nSize))
 	return nSize
 			
 
 # ########################################################################### #
 def main(lArgs):
+
+	bPrnHdr = False
+	#bPrnHdr = True
 
 	print("Reading XSD: %s"%g_sSchema)
 	fSchema = open(g_sSchema)
@@ -187,7 +217,9 @@ def main(lArgs):
 		if sType == 'data':
 			lDatPkts[nPktId] += 1
 			continue
-								
+		
+		if bPrnHdr:
+			print(xPkt)
 		fPkt = StringIO(xPkt)
 		
 		try:
@@ -213,8 +245,9 @@ def main(lArgs):
 			nDatLen = getDatLen(doc.getroot(), nPktId)
 			reader.setDataSize(nPktId, nDatLen)
 			#print("For Packet ID %s, data size is %d"%(nPktId, nDatLen))
-		
-		print("ID: %s <%s> [OKAY]"%(nPktId, sType))
+			print("ID: %s <%s> [OKAY] (data size %d bytes)"%(nPktId, sType, nDatLen))
+		else:
+			print("ID: %s <%s> [OKAY]"%(nPktId, sType))
 		
 	for nPktId in range(100):
 		if lDatPkts[nPktId] != 0:
