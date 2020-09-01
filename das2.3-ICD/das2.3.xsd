@@ -108,7 +108,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <xs:complexType name="Ref">
   <xs:sequence minOccurs="0">
     <xs:element name="properties" type="Properties" minOccurs="0"/>
-    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
@@ -151,9 +151,9 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <!-- Multi Value Per Row, Spanning 1 Coordinate -->
 <xs:complexType name="YDat">
   <xs:sequence minOccurs="0">
-    <xs:element name="xoffset" type="Offset" minOccurs="0"/>
+    <xs:element name="xoffset" type="Offset" minOccurs="0" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
-    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
@@ -169,10 +169,10 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <!-- Multi Value Per Row, Spanning 2 Coordinates -->
 <xs:complexType name="ZDat">
   <xs:sequence>
-    <xs:element name="xoffset" type="Offset" minOccurs="0" />
-    <xs:element name="yoffset" type="Offset" minOccurs="0" />
+    <xs:element name="xoffset" type="Offset" minOccurs="0" maxOccurs="8"/>
+    <xs:element name="yoffset" type="Offset" minOccurs="0" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
-    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
@@ -189,11 +189,11 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <!-- Multi Value Per Row, Spanning 3 Coordinates -->
 <xs:complexType name="WDat">
   <xs:sequence>
-    <xs:element name="xoffset" type="Offset" minOccurs="0" />
-    <xs:element name="yoffset" type="Offset" minOccurs="0" />
-    <xs:element name="zoffset" type="Offset" />
+    <xs:element name="xoffset" type="Offset" minOccurs="0" maxOccurs="8"/>
+    <xs:element name="yoffset" type="Offset" minOccurs="0" maxOccurs="8" />
+    <xs:element name="zoffset" type="Offset" minOccurs="0" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
-    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
