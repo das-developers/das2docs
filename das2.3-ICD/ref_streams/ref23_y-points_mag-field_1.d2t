@@ -5,7 +5,7 @@
     <p name="xMonotonic" type="boolean">true</p>
   </properties>
 </stream>
-[01]000529<packet>
+[01]000600<packet>
   <xref name="time" type="time22" units="UTC"/>
   <ydat name="radius" type="ascii11" units="">
     <properties><p name="yLabel">R!DE!N</p></properties>
@@ -14,7 +14,10 @@
     <properties><p name="yLabel">MLat</p></properties>
   </ydat>
   <ydat type="ascii11" name="mag_lt" units="degrees">
-    <properties><p name="yLabel">MLT</p></properties>
+    <properties>
+      <p name="yLabel">MLT</p>
+      <p name="yCircular" type="doubleRange">0.0 360.0</p>
+    </properties>
   </ydat>
   <ydat type="ascii11" name="l_shell" units="">
     <properties><p name="yLabel">L</p></properties>
