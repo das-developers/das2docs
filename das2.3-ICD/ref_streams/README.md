@@ -10,10 +10,10 @@ schema using the included python3 script [das2_validate](../scripts/das2_validat
 
 | File                | Source                      | Plot Type  | Description    |
 | :------------------ | :-------------------------- | :--------- | :------------- |
-| [B23_y-points_01.d2t](B23_y-points_01.d2t) | Van Allen Probe A location  | Multi-line | Data packet lengths are provided MLT values occupy a circular space |
-| [B23_y-points_02.d2t](B23_y-points_02.d2t) | Van Allen Probe A location  | Multi-line | **y-points_01** source, after passing through a bin average reducer |
+| [B23_y-points_01.d2t](B23_y-points_01.d2t) | Van Allen Probe A location  | Multi-line | MLT values occupy a circular space<br>Provides data packet lengths |
+| [B23_y-points_02.d2t](B23_y-points_02.d2t) | Van Allen Probe A location  | Multi-line | Statistics planes caused by passing<br> through a stream reducer |
 | [B23_y-sets_01.d2t](B23_y-points_02.d2t)   | Juno Waves 50 kHz Burst     | Single-line| Efficent waveforms using time offsets |
-| [B23_y-sets_02.d2t](B23_y-sets_02.d2t)     | Juno Waves 50 kHz Burst     | Single-line| Extends the headers in **y-sets_01** with user-defined elements |
-| [B23_y-sets_03.d2s](B23_y-points_01.d2t)   | Juno Waves 50 KHz Burst     | Single-line| As **y-sets_01** but X-offsets explicitly enumerated and <br> data packets are binary |
+| [B23_y-sets_02.d2t](B23_y-sets_02.d2t)     | Juno Waves 50 kHz Burst     | Single-line| Extending headers with user-defined elements |
+| [B23_y-sets_03.d2s](B23_y-points_01.d2t)   | Juno Waves 50 KHz Burst     | Single-line| Using explicit X-offsets <br> data packets are binary |
 
 
