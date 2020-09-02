@@ -2,11 +2,11 @@
 
 The stream files in this directory are provided for testing new das2.3 parsers.  All 
 were taken from mission data and provide real world processing examples.  Though 
-all header packets are present in the reference streams, most of the data packets
-have been dropped to conserve space.
+all header packets are present in these streams, most of the data packets have been
+dropped to conserve space.
 
-These stream files have been tested against the [das2.3-basic.xsd](../das2.3-basic.xsd)
-schema using the included python3 script [das2_validate](../scripts/das2_validate).
+These files have been tested against the [das2.3-basic.xsd](../das2.3-basic.xsd)
+schema document using the included python3 script [das2_validate](../scripts/das2_validate).
 
 | File                | Source                      | Plot Type  | Description    |
 | :------------------ | :-------------------------- | :--------- | :------------- |
