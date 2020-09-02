@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!-- 
   This is a multi-root schema definition.  It will validate any one of the
-  top-level das2.3 headers, <stream>, <packet>, <comment> or <exception>.
-  Of course to be well-formed only *one* of the elements above may be at the
-  root of the document.  
+  top-level das2.3-basic stream root elements, <stream>, <packet>, <comment>
+  or <exception>.  Of course to be well-formed only *one* of the elements
+  above may form a header packet.
 -->   
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
 
@@ -12,7 +12,7 @@
 <!-- The data types or stream version attribute -->
 <xs:simpleType name="StreamVersion">
   <xs:restriction base="xs:string">
-    <xs:enumeration value="2.3" />
+    <xs:enumeration value="2.3-basic" />
   </xs:restriction>  
 </xs:simpleType>
 

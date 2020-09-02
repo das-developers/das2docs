@@ -1,4 +1,4 @@
-[00]000708<stream version="2.3">
+[00]000714<stream version="2.3-basic">
   <properties>
     <p name="title">Galileo PWS - LRS Electric</p>
     <p name="xTagWidth" type="Datum">80 s</p>
@@ -14,7 +14,7 @@
     <p name="zFill" type="double">0.0</p>
   </properties>
 </stream>
-[10]002132<packet>
+[10]002169<packet>
   <xref name="time" type="time24" units="UTC"/>
   <zdat name="electric" type="ascii11" units="V**2 m**-2 Hz**-1" nitems="152" role="center">
     <xwidth units="s" min="0.5" interval="0" />

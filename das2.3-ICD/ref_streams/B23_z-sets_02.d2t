@@ -1,4 +1,4 @@
-[00]000374<stream version="2.3" >
+[00]000380<stream version="2.3-basic" >
   <properties>
     <p name="xTagWidth" type="Datum">128.000000 s</p>
     <p name="zFill" type="double">-1.000000e+31</p>
