@@ -20,4 +20,4 @@ schema using the included python3 script [das2_validate](../scripts/das2_validat
 | [B23_z-sets_02.d2t](B23_z-sets_02.d2t)     | Cassini RPWS Survey        | Spectrogram   | Covering frequency space via multiple<br>receivers |
 | [B23_z-sets_03.d2t](B23_z-sets_03.d2t)     | Cassini RPWS Survey        | Spectrogram   | Adds location data to survey values |
 | [B23_z-sets_04.d2t](B23_z-sets_04.d2t)     | Juno Waves Shifted Burst   | Spetrogram    | Dual side-band spectra from a tunable<br> mixer |
-| [B23_w-sets_01.d2t](B23_w-sets_01.d2t)     | MEX MARSIS Radargram       | Volume        | Data values as a function of three<br>coordinates |
+| [B23_w-sets_01.d2t](B23_w-sets_01.d2t)     | MEX MARSIS Radargram       | Volume-slice  | Data values as a function of three<br>coordinates |
