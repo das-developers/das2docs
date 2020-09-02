@@ -7,56 +7,56 @@
     <p name="summary">Original reader output bin averaged with statistics</p>
   </properties>
 </stream>
-[01]001994<packet>
+[01]002175<packet>
   <xref name="time" type="time22" units="UTC"/>
   <ydat name="radius" type="ascii11" units="" role="average">
     <properties><p name="yLabel">R!DE!N</p></properties>
-    <plane role="max" units="">
+    <plane role="max" units="" type="ascii11" >
       <properties><p name="yLabel">R!DE!N Max</p></properties>
     </plane>
-    <plane role="min" units="">
+    <plane role="min" units="" type="ascii11">
       <properties><p name="yLabel">R!DE!N Min</p></properties>
     </plane>
-    <plane role="std_dev" units="">
+    <plane role="std_dev" units="" type="ascii11">
       <properties><p name="yLabel">R!DE!N Std. Dev.</p></properties>
     </plane>
   </ydat>
   <ydat name="mag_lat" type="ascii11" units="degrees" role="average">
     <properties><p name="yLabel">MLat</p></properties>
-    <plane role="max" units="degrees">
+    <plane role="max" units="degrees" type="ascii11">
       <properties><p name="yLabel">MLat Max</p></properties>
     </plane>
-    <plane role="min" units="degrees">
+    <plane role="min" units="degrees" type="ascii11">
       <properties><p name="yLabel">MLat Min</p></properties>
     </plane>
-    <plane role="std_dev" units="">
+    <plane role="std_dev" units="" type="ascii11">
       <properties><p name="yLabel">MLat Std. Dev.</p></properties>
     </plane>
   </ydat>
-  <ydat type="ascii11" name="mag_lt" units="degrees" role="average">
+  <ydat name="mag_lt" type="ascii11" units="degrees" role="average">
     <properties>
       <p name="yLabel">MLT</p>
       <p name="yCircular" type="doubleRange">0.0 360.0</p>
     </properties>
-    <plane role="max" units="degrees">
+    <plane role="max" units="degrees" type="ascii11">
       <properties><p name="yLabel">MLT Max</p></properties>
     </plane>
-    <plane role="min" units="degrees">
+    <plane role="min" units="degrees" type="ascii11">
       <properties><p name="yLabel">MLT Min</p></properties>
     </plane>
-    <plane role="std_dev" units="">
+    <plane role="std_dev" units="" type="ascii11">
       <properties><p name="yLabel">MLT Std. Dev.</p></properties>
     </plane>
   </ydat>
   <ydat type="ascii11" name="l_shell" units="" role="average">
     <properties><p name="yLabel">L</p></properties>
-    <plane role="max" units="">
+    <plane role="max" units="" type="ascii11">
       <properties><p name="yLabel">L Max</p></properties>
     </plane>
-    <plane role="min" units="">
+    <plane role="min" units="" type="ascii11">
       <properties><p name="yLabel">L Min</p></properties>
     </plane>
-    <plane role="std_dev" units="">
+    <plane role="std_dev" units="" type="ascii11">
       <properties><p name="yLabel">L Std. Dev.</p></properties>
     </plane>
   </ydat>

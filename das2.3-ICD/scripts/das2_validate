@@ -188,14 +188,15 @@ def getDatLen(packet, nPktId):
 			if 'nitems' in child.attrib:
 				nItems = int(child.attrib['nitems'], 10)
 				
-		nPlanes = 1
-		# Count the number of planes in the packet
+		nSize += nItems * nSzEa
+				
+		# Add sizes for all the planes, these have to have the same number
+		# of items as the parent
 		for subChild in child:
 			if subChild.tag == 'plane':
-				nPlanes += 1
+				nSzEa = getValSz(subChild.attrib['type'])
+				nSize += nSzEa * nItems
 			
-		nSize += nItems * nPlanes * nSzEa
-	
 	#print("%d size is: %d"%(nPktId, nSize))
 	return nSize
 			

@@ -13,7 +13,7 @@
   <ydat name="mag_lat" type="ascii11" units="degrees">
     <properties><p name="yLabel">MLat</p></properties>
   </ydat>
-  <ydat type="ascii11" name="mag_lt" units="degrees">
+  <ydat name="mag_lt" type="ascii11" units="degrees">
     <properties>
       <p name="yLabel">MLT</p>
       <p name="yCircular" type="doubleRange">0.0 360.0</p>

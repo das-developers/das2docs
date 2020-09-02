@@ -15,8 +15,9 @@
   </properties>
 </stream>
 [10]002132<packet>
-  <xref name="time" type="time24" units="UTC" role="min"/>
+  <xref name="time" type="time24" units="UTC"/>
   <zdat name="electric" type="ascii11" units="V**2 m**-2 Hz**-1" nitems="152" role="center">
+    <xwidth units="s" min="0.5" interval="0" />
     <yoffset units="Hz" role="center">
       5.620e+00, 1.000e+01, 1.780e+01, 3.110e+01, 4.213e+01, 4.538e+01, 
       4.888e+01, 5.265e+01, 5.671e+01, 6.109e+01, 6.580e+01, 7.087e+01, 

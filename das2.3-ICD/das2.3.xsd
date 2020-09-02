@@ -146,6 +146,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
   </xs:sequence>
   <xs:attribute name="role" type="PlaneRole" use="required" />
   <xs:attribute name="units" type="xs:token" use="required" />
+  <xs:attribute name="type" type="StorageType"  use="required" />
 </xs:complexType>
 
 <!-- Multi Value Per Row, Spanning 1 Coordinate -->
