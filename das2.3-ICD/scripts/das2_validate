@@ -173,33 +173,29 @@ def getDatLen(packet, nPktId):
 	nSize = 0
 	for child in packet:
 	
-		if child.tag not in ('xcoord','ycoord','zcoord','ydata','zdata','wdata'):
+		if child.tag not in ('x','y','z','w','yset','zset','wset'):
 			continue
-	
-		# Get the value type
-		if 'type' not in child.attrib:
-			raise ValueError(
-				"Attribute 'type' missing for element %s in packet ID %d"%(
-				child.tag, nPktId
-			))
-			
-		nSzEa = getValSz(child.attrib['type'])
-		
+					
 		nItems = 1
-		if child.tag in ('ydata','zdata','wdata'):
+		if child.tag in ('yset','zset','wset'):
 			if 'nitems' in child.attrib:
 				nItems = int(child.attrib['nitems'], 10)
-				
-		nSize += nItems * nSzEa
-				
-		# Add sizes for all the planes, these have to have the same number
-		# of items as the parent
+								
+		# Add sizes for all the planes, they all have the same number of items
+		# but mak have different value sizes
 		for subChild in child:
 			if subChild.tag == 'plane':
+			
+				# Get the value type
+				if 'type' not in subChild.attrib:
+					raise ValueError(
+						"Attribute 'type' missing for element %s in packet ID %d"%(
+						subChild.tag, nPktId
+					))
+			
 				nSzEa = getValSz(subChild.attrib['type'])
 				nSize += nSzEa * nItems
 			
-	#print("%d size is: %d"%(nPktId, nSize))
 	return nSize
 			
 

@@ -114,23 +114,28 @@
 <xs:simpleType name="StorageType">
   <xs:restriction base="xs:string">
       <xs:pattern 
-value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_int8|ascii[1-9][0-9]*|time[1-9][0-9]*" />
+value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_int8|ascii[1-9][0-9]*|time[1-9][0-9]*|char[1-9][0-9]*" />
    </xs:restriction>
 </xs:simpleType>
 
+<!-- A single plane for a variable -->
+<xs:complexType name="Plane">
+  <xs:attribute name="role" type="PlaneRole" default="center" />
+  <xs:attribute name="type" type="StorageType"  use="required" />
+  <xs:attribute name="units" type="xs:token"  use="required" />
+</xs:complexType>
+
 
 <!-- Single Value Per Row Plane -->
-<xs:complexType name="StreamCoord">
-  <xs:sequence minOccurs="0">
+<xs:complexType name="PointData">
+  <xs:sequence>
+    <xs:element name="plane" type="Plane" minOccurs="1" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
   <xs:attribute name="name" type="ArrayName" use="required" />
-  <xs:attribute name="type" type="StorageType"  use="required" />
-  <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="role" type="CoordRole"  default="center" />
 </xs:complexType>
 
 <xs:simpleType name="Values">
@@ -155,6 +160,8 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
   </xs:simpleContent>  
 </xs:complexType>
 
+<!--
+
 <xs:complexType name="Plane" >
   <xs:sequence>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
@@ -164,8 +171,10 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
   <xs:attribute name="type" type="StorageType"  use="required" />
 </xs:complexType>
 
+-->
+
 <!-- Multi Value Per Row, Spanning 1 Coordinate -->
-<xs:complexType name="YData">
+<xs:complexType name="YSet">
   <xs:sequence minOccurs="0">
     <xs:element name="xcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
@@ -183,7 +192,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 </xs:complexType>
 
 <!-- Multi Value Per Row, Spanning 2 Coordinates -->
-<xs:complexType name="ZData">
+<xs:complexType name="ZSet">
   <xs:sequence>
     <xs:element name="xcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
     <xs:element name="ycoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
@@ -203,7 +212,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 
 
 <!-- Multi Value Per Row, Spanning 3 Coordinates -->
-<xs:complexType name="WData">
+<xs:complexType name="WSet">
   <xs:sequence>
     <xs:element name="xcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
     <xs:element name="ycoord" type="HdrCoord" minOccurs="0" maxOccurs="8" />
@@ -226,12 +235,12 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <xs:element name="packet">
   <xs:complexType>
     <xs:sequence>
-      <xs:element name="xcoord" type="StreamCoord" minOccurs="1" maxOccurs="unbounded"/>
-      <xs:element name="ycoord" type="StreamCoord" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="zcoord" type="StreamCoord" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="ydata" type="YData" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="zdata" type="ZData" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="wdata" type="WData" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="x" type="PointData" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element name="y" type="PointData" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="z" type="PointData" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="yset" type="YSet" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="zset" type="ZSet" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="wset" type="WSet" minOccurs="0" maxOccurs="unbounded"/>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
       <!-- Can extend with other elements here, but they can't be from this namespace -->
       <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
