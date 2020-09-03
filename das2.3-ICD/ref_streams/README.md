@@ -5,8 +5,10 @@ were taken from mission data and provide real world processing examples.  Though
 all header packets are present in these streams, most of the data packets have been
 dropped to conserve space.
 
-These files have been tested against the [das2.3-basic.xsd](../das2.3-basic.xsd)
-schema document using the included python3 script [das2_validate](../scripts/das2_validate).
+These files have been tested against the [das2.3-basic-strict.xsd](../das2.3-basic-strict.xsd)
+schema document except for [B23_y-sets_02.d2t](B23_y-sets_02.d2t) which was validated
+using the standard extendable schema [das2.3-basic.xsd](../das2.3-basic.xsd).  Validation
+was performed using the included python3 script [das2_validate](../scripts/das2_validate).
 
 | File                | Source                      | Plot Type  | Description    |
 | :------------------ | :-------------------------- | :--------- | :------------- |
