@@ -19,5 +19,5 @@ schema document using the included python3 script [das2_validate](../scripts/das
 | [B23_z-sets_01.d2t](B23_z-sets_01.d2t)     | Galileo PWS Survey         | Spectrogram   | Sweep frequency reciever output |
 | [B23_z-sets_02.d2t](B23_z-sets_02.d2t)     | Cassini RPWS Survey        | Spectrogram   | Covering frequency space via multiple<br>receivers |
 | [B23_z-sets_03.d2t](B23_z-sets_03.d2t)     | Cassini RPWS Survey        | Spectrogram   | Adds location data to survey values |
-| [B23_z-sets_04.d2t](B23_z-sets_04.d2t)     | Juno Waves Shifted Burst   | Spetrogram    | Dual side-band spectra from a tunable<br> mixer |
+| [B23_z-sets_04.d2t](B23_z-sets_04.d2t)     | Juno Waves Shifted Burst   | Spectrogram   | Spectra from an Fce tracking mixer |
 | [B23_w-sets_01.d2t](B23_w-sets_01.d2t)     | MEX MARSIS Radargram       | Volume-slice  | Data values as a function of three<br>coordinates |

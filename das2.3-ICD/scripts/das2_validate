@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from os.path import basename as bname
+import argparse
 import sys
 
 from lxml import etree
@@ -171,7 +173,7 @@ def getDatLen(packet, nPktId):
 	nSize = 0
 	for child in packet:
 	
-		if child.tag not in ('xref','yref','zref','ydat','zdat','wdat'):
+		if child.tag not in ('xcoord','ycoord','zcoord','ydata','zdata','wdata'):
 			continue
 	
 		# Get the value type
@@ -184,7 +186,7 @@ def getDatLen(packet, nPktId):
 		nSzEa = getValSz(child.attrib['type'])
 		
 		nItems = 1
-		if child.tag.endswith('dat'):
+		if child.tag in ('ydata','zdata','wdata'):
 			if 'nitems' in child.attrib:
 				nItems = int(child.attrib['nitems'], 10)
 				
@@ -204,64 +206,102 @@ def getDatLen(packet, nPktId):
 # ########################################################################### #
 def main(lArgs):
 
-	bPrnHdr = False
-	#bPrnHdr = True
+	# Ignore confusing help formatting for now.  (I think newline character
+	# insertion in help output is the most requested feature of argparse.)
+	
+	psr = argparse.ArgumentParser(
+		description="das2.3-basic stream validator"
+	)
+	
+	psr.add_argument(
+		'-s','--schema', default=g_sSchema, help="XSD schema file to load, "+\
+		"defaults to %s."%g_sSchema + " Use this option to select the "+\
+		"strict schema if desired.", dest='sSchema', metavar='XSD'
+	)
+	
+	psr.add_argument(
+		'-p', '--prn-hdrs', default=False, action="store_true",
+		help="Print each das2 header encountered in the stream prior to "+\
+		"schema validation.", dest='bPrnHdr'
+	)
+	
+	# End command line with list of files to validate
+	psr.add_argument(
+		'lFiles', help='The file(s) to validate', nargs='+', metavar='FILE'
+	)
+	
+	args = psr.parse_args()
 
-	print("Reading XSD: %s"%g_sSchema)
-	fSchema = open(g_sSchema)
+	print("Reading XSD: %s"%args.sSchema)
+	fSchema = open(args.sSchema)
 	schema_doc = etree.parse(fSchema)
 	schema = etree.XMLSchema(schema_doc)
 	
-	print("Validating: %s"%lArgs[1])
-	fIn = open(lArgs[1], 'rb')
+	if len(args.lFiles) == 0:
+		print("No input files specified, so... all done right?")
+		return 0
 	
-	lDatPkts = [0]*100
+	for sFile in args.lFiles:
 	
-	reader = PacketReader(fIn)
+		print("Validating: %s"%sFile)
+		fIn = open(sFile, 'rb')
 	
-	for (sType, nPktId, xPkt) in reader:
+		lDatPkts = [0]*100
+	
+		reader = PacketReader(fIn)
+	
+		for (sType, nPktId, xPkt) in reader:
 		
-		if sType == 'data':
-			lDatPkts[nPktId] += 1
-			continue
+			if sType == 'data':
+				lDatPkts[nPktId] += 1
+				continue
 		
-		if bPrnHdr:
-			print(xPkt)
-		fPkt = StringIO(xPkt)
+			if args.bPrnHdr:
+				print(xPkt)
+			fPkt = StringIO(xPkt)
 		
-		try:
-			doc = etree.parse(fPkt)
-		except etree.XMLSyntaxError as e:
-			print(xPkt)
-			print("ID: %s <%s> [FAILED]"%(nPktId, sType))
-			print(str(e))
-			return 5
+			try:
+				doc = etree.parse(fPkt)
+			except etree.XMLSyntaxError as e:
+				print(xPkt)
+				print("ID: %s <%s> [FAILED]"%(nPktId, sType))
+				print(str(e))
+				return 5
 		
-		sType = doc.getroot().tag
+			sType = doc.getroot().tag
 		
-		# Make sure it validates		
-		try:
-			schema.assertValid(doc)
-		except etree.DocumentInvalid as e:
-			print("ID: %s <%s> [FAILED]"%(nPktId, sType))
-			print(str(e))
-			return 5		
+			# Make sure it validates		
+			try:
+				schema.assertValid(doc)
+			except etree.DocumentInvalid as e:
+				print("ID: %s <%s> [FAILED]"%(nPktId, sType))
+				print(str(e))
+				return 5		
 			
-		# If this is a packet element, get the total length
-		if sType == 'packet':
-			nDatLen = getDatLen(doc.getroot(), nPktId)
-			reader.setDataSize(nPktId, nDatLen)
-			#print("For Packet ID %s, data size is %d"%(nPktId, nDatLen))
-			print("ID: %s <%s> [OKAY] (data size %d bytes)"%(nPktId, sType, nDatLen))
-		else:
-			print("ID: %s <%s> [OKAY]"%(nPktId, sType))
+			# If this is a packet element, get the total length
+			if sType == 'packet':
+				nDatLen = getDatLen(doc.getroot(), nPktId)
+				reader.setDataSize(nPktId, nDatLen)
+				#print("For Packet ID %s, data size is %d"%(nPktId, nDatLen))
+				print("ID: %s <%s> [OKAY] (data size %d bytes)"%(nPktId, sType, nDatLen))
+			else:
+				print("ID: %s <%s> [OKAY]"%(nPktId, sType))
+			
+		for nPktId in range(100):
+			if lDatPkts[nPktId] != 0:
+				print("ID: %d has %d data packets [OKAY]"%(nPktId, lDatPkts[nPktId]))
 		
-	for nPktId in range(100):
-		if lDatPkts[nPktId] != 0:
-			print("ID: %d has %d data packets [OKAY]"%(nPktId, lDatPkts[nPktId]))
+		print('File "%s" validates'%sFile)
 	
-	print("%s: validates as a das2.3 stream"%lArgs[1])
+	if len(args.lFiles) == 1:
+		print("against schema %s"%bname(args.sSchema))
+	else:
+		print("All %d stream files validated against %s"%(
+			len(args.lFiles), bname(args.sSchema))
+		)
+		
 	return 0	
-	
+
+# ########################################################################### #
 if __name__ == "__main__":
 	sys.exit(main(sys.argv))

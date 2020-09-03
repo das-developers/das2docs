@@ -7,9 +7,11 @@
     <p name="summary">Original reader output bin averaged with statistics</p>
   </properties>
 </stream>
-[01]002175<packet>
-  <xref name="time" type="time22" units="UTC"/>
-  <ydat name="radius" type="ascii11" units="" role="average">
+[01]002201<packet>
+
+  <xcoord name="time" type="time22" units="UTC"/>
+  
+  <ydata name="radius" type="ascii11" units="" role="average">
     <properties><p name="yLabel">R!DE!N</p></properties>
     <plane role="max" units="" type="ascii11" >
       <properties><p name="yLabel">R!DE!N Max</p></properties>
@@ -20,8 +22,9 @@
     <plane role="std_dev" units="" type="ascii11">
       <properties><p name="yLabel">R!DE!N Std. Dev.</p></properties>
     </plane>
-  </ydat>
-  <ydat name="mag_lat" type="ascii11" units="degrees" role="average">
+  </ydata>
+  
+  <ydata name="mag_lat" type="ascii11" units="degrees" role="average">
     <properties><p name="yLabel">MLat</p></properties>
     <plane role="max" units="degrees" type="ascii11">
       <properties><p name="yLabel">MLat Max</p></properties>
@@ -32,8 +35,9 @@
     <plane role="std_dev" units="" type="ascii11">
       <properties><p name="yLabel">MLat Std. Dev.</p></properties>
     </plane>
-  </ydat>
-  <ydat name="mag_lt" type="ascii11" units="degrees" role="average">
+  </ydata>
+  
+  <ydata name="mag_lt" type="ascii11" units="degrees" role="average">
     <properties>
       <p name="yLabel">MLT</p>
       <p name="yCircular" type="doubleRange">0.0 360.0</p>
@@ -47,8 +51,9 @@
     <plane role="std_dev" units="" type="ascii11">
       <properties><p name="yLabel">MLT Std. Dev.</p></properties>
     </plane>
-  </ydat>
-  <ydat type="ascii11" name="l_shell" units="" role="average">
+  </ydata>
+  
+  <ydata type="ascii11" name="l_shell" units="" role="average">
     <properties><p name="yLabel">L</p></properties>
     <plane role="max" units="" type="ascii11">
       <properties><p name="yLabel">L Max</p></properties>
@@ -59,7 +64,8 @@
     <plane role="std_dev" units="" type="ascii11">
       <properties><p name="yLabel">L Std. Dev.</p></properties>
     </plane>
-  </ydat>
+  </ydata>
+  
 </packet>
 |01|000198|2013-001T01:00:00.000  5.782e+00  5.782e+00  5.782e+00  5.782e+00 -1.276e+01 -1.276e+01 -1.276e+01 -1.276e+01  3.220e+00  3.220e+00  3.220e+00  3.220e+00  6.079e+00  6.079e+00  6.079e+00  6.079e+00
 |01|000198|2013-001T01:01:00.000  5.782e+00  5.782e+00  5.782e+00  5.782e+00 -1.274e+01 -1.274e+01 -1.274e+01 -1.274e+01  3.232e+00  3.232e+00  3.232e+00  3.232e+00  6.077e+00  6.077e+00  6.077e+00  6.077e+00

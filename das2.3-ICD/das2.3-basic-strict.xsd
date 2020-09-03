@@ -4,6 +4,11 @@
   top-level das2.3-basic stream root elements, <stream>, <packet>, <comment>
   or <exception>.  Of course to be well-formed only *one* of the elements
   above may form a header packet.
+  
+  This is an alternate version of the main schema.  It removes all extension
+  points.  Only defined das2.3-basic elements and attributes are allowed.
+  Though clients should not use this schema for standard operations it is 
+  useful when debugging new streams.
 -->   
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
 
@@ -67,15 +72,9 @@
 <xs:complexType>
     <xs:sequence>
       <xs:element name="properties" type="Properties" minOccurs="0" maxOccurs="1"/>
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <!-- You can add other tags here, but they can't be from the das2 namespace -->
-          <xs:any namespace="##other" processContents="skip" />
-          <xs:any namespace="##local" processContents="skip" />
-        </xs:choice>
     </xs:sequence>
     <xs:attribute name="version" type="StreamVersion" use="required" />
-	 <xs:attribute name="primaryGroup" type="ArrayName" />
-    <xs:anyAttribute processContents="skip" />
+    <xs:attribute name="primaryGroup" type="ArrayName" />
   </xs:complexType>
 </xs:element>
 
@@ -100,7 +99,7 @@
   <xs:restriction base="xs:string">
     <xs:enumeration value="center" />
     <xs:enumeration value="average" />
-	 <xs:enumeration value="count" />
+    <xs:enumeration value="count" />
     <xs:enumeration value="min" />
     <xs:enumeration value="max" />
     <xs:enumeration value="width" />
@@ -145,7 +144,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <xs:complexType name="HdrCoord">
   <xs:simpleContent>
     <xs:extension base="Values" >
-	   <xs:attribute name="name" type="ArrayName" use="required" />
+      <xs:attribute name="name" type="ArrayName" use="required" />
       <xs:attribute name="units" type="xs:token" use="required" />
       <xs:attribute name="minval" type="xs:double" />
       <xs:attribute name="maxval" type="xs:double" />
@@ -170,9 +169,6 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:element name="xcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
-    <!-- Can extend with other elements here, but they can't be from this namespace -->
-    <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
-    <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
   <xs:attribute name="name" type="ArrayName" use="required" />
   <xs:attribute name="group" type="ArrayName" />
@@ -189,9 +185,6 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:element name="ycoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
-    <!-- Can extend with other elements here, but they can't be from this namespace -->
-    <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
-    <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
   <xs:attribute name="name" type="ArrayName" use="required" />
   <xs:attribute name="group" type="ArrayName" />
@@ -210,9 +203,6 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:element name="zcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
-    <!-- Can extend with other elements here, but they can't be from this namespace -->
-    <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
-    <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
   <xs:attribute name="name" type="ArrayName" use="required" />
   <xs:attribute name="group" type="ArrayName" />
@@ -233,14 +223,8 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
       <xs:element name="zdata" type="ZData" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="wdata" type="WData" minOccurs="0" maxOccurs="unbounded"/>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <!-- Can extend with other elements here, but they can't be from this namespace -->
-      <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
-      <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
       </xs:choice>
-    </xs:sequence>
-  
-    <!-- Can extend with other attributes, will be skipped by schema -->
-    <xs:anyAttribute processContents="skip" />
+    </xs:sequence>  
   </xs:complexType>
 </xs:element>
 
@@ -251,9 +235,6 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:simpleContent>
       <xs:extension base="xs:string" >
         <xs:attribute name="type" type="xs:token" use="required"/>
-        
-        <!-- Can extend with other attributes, will be skipped by schema -->
-        <xs:anyAttribute processContents="skip" />
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
@@ -267,9 +248,6 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
       <xs:extension base="xs:string" >
         <xs:attribute name="type" type="xs:token" use="required"/>
         <xs:attribute name="source" type="xs:normalizedString"/>
-       
-        <!-- Can extend with other attributes, will be skipped by schema -->
-        <xs:anyAttribute processContents="skip" />
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
