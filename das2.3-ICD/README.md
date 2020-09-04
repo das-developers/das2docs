@@ -23,14 +23,14 @@ das2 streams are:
 
   * Reference and offset coordinates explicitly denoted.  This allows
     waveforms, apparent altitude and down-mixing receiver data to all
-    be handled in the same manner.
+    be handled in a consistant manner.
 
   * All stream item names consistently start with the letter of the
     axis for which they provide data (yscan --> zset)
 
   * The header XSD schema is extensible at explicit points so that
-    site customizations may be added in the future without breaking
-    standard/older tools.
+    site customizations may be added without breaking standard/older
+    tools.
 
   * The W axis has been added for streaming volumetric data, such as 
     Mars Express radargrams.
@@ -40,6 +40,5 @@ das2 streams are:
     stream (helps Juno Survey data).
 
   * Data packets can have explicit lengths, but these are not required
-    unless you're adding extra non-das2 stuff to the end of the data
-    packets.
+    unless data packets are appened with extra non-standard stuff.
 	 
