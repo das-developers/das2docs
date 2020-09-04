@@ -1,4 +1,4 @@
-[00]001072<stream version="2.3-basic" custom_attrib1="test_extensibility">
+[00]001066<stream version="2.3" custom_attrib1="test_extensibility">
   <properties>
     <p name="title">Waves: 50 kHz Electric Waveforms%{xCacheResInfo}</p>
     <p name="xTagWidth" type="Datum">2.0 s</p>
@@ -24,7 +24,7 @@
   </custom_db_info>
   
 </stream>
-[01]000939<packet custom_attrib3="test_extensibility" >
+[01]000945<packet custom_attrib3="test_extensibility" >
   <x name="time">
   	<plane role="min" type="time24" units="UTC"/>
  </x>
@@ -32,9 +32,9 @@
   <yset name="lfr_lo_e" nitems="6144">
   	 <plane type="ascii11" units="V m**-1" />
 	 
-    <xvals name="sample_time"> 
-	   <planevals offsets="time" minval="0.0" interval="20.0" units="μs" />
-    </xvals>
+    <xheader name="sample_time"> 
+	   <headerplane offsets="time" minval="0.0" interval="20.0" units="μs" />
+    </xheader>
   </yset>
   
   <!-- Custom extension data for some site-specific use outside the scope

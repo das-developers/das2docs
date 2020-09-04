@@ -1,4 +1,4 @@
-[00]000532<stream version="2.3-basic">
+[00]000526<stream version="2.3">
   <properties>
     <p name="title">Waves: 50 kHz Electric Waveforms%{xCacheResInfo}</p>
     <p name="xTagWidth" type="Datum">2.0 s</p>
@@ -11,7 +11,7 @@
     <p name="sourceId">das2_ascii</p>
   </properties>
 </stream>
-[01]000313<packet>
+[01]000316<packet>
   <x name="time">
     <plane role="min" type="time24" units="UTC"/>
   </x>

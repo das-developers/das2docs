@@ -14,7 +14,7 @@
     <p name="zFill" type="double">0.0</p>
   </properties>
 </stream>
-[10]003658<packet>
+[10]003647<packet>
   <x name="time">
     <plane role="min" type="time24" units="UTC" />
   </x>
@@ -23,7 +23,7 @@
     <plane type="ascii11" units="V**2 m**-2 Hz**-1" />
     
     <yheader name="frequecy"> 
-      <headerplane role="center" units="Hz" repeat="4">
+      <headerplane role="center" units="Hz">
         <values>
         5.620e+00, 1.000e+01, 1.780e+01, 3.110e+01, 4.213e+01, 4.538e+01, 
         4.888e+01, 5.265e+01, 5.671e+01, 6.109e+01, 6.580e+01, 7.087e+01, 

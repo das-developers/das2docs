@@ -1,4 +1,4 @@
-[00]000321<stream version="2.3-basic">
+[00]000315<stream version="2.3">
   <properties>
     <p name="title">Van Allen Probe A - Location</p>
     <p name="xLabel">UTC</p>
@@ -7,7 +7,7 @@
     <p name="summary">Original reader output bin averaged with statistics</p>
   </properties>
 </stream>
-[01]001376<packet>
+[01]001332<packet>
   <x name="time">
     <plane type="time22" units="UTC" />
   </x>

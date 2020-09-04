@@ -272,6 +272,7 @@ def main(lArgs):
 			try:
 				schema.assertValid(doc)
 			except etree.DocumentInvalid as e:
+				print(xPkt)
 				print("ID: %s <%s> [FAILED]"%(nPktId, sType))
 				print(str(e))
 				return 5		
@@ -289,7 +290,7 @@ def main(lArgs):
 			if lDatPkts[nPktId] != 0:
 				print("ID: %d has %d data packets [OKAY]"%(nPktId, lDatPkts[nPktId]))
 		
-		print('File "%s" validates'%sFile)
+		print('File "%s" validates\n'%sFile)
 	
 	if len(args.lFiles) == 1:
 		print("against schema %s"%bname(args.sSchema))
