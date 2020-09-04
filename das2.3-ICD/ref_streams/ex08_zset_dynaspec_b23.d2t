@@ -1,4 +1,4 @@
-[00]000729<stream version="2.3" primaryGroup="electric">
+[00]000735<stream version="2.3/basic" primaryGroup="electric">
   <properties>
     <p name="title">Galileo PWS - LRS Electric</p>
     <p name="xTagWidth" type="Datum">80 s</p>

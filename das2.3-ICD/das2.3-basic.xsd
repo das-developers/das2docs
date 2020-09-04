@@ -12,7 +12,7 @@
 <!-- The data types or stream version attribute -->
 <xs:simpleType name="StreamVersion">
   <xs:restriction base="xs:string">
-    <xs:enumeration value="2.3" />
+    <xs:enumeration value="2.3/basic" />
   </xs:restriction>  
 </xs:simpleType>
 

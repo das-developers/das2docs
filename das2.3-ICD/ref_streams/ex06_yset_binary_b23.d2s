@@ -1,4 +1,4 @@
-[00]000514<stream version="2.3" >
+[00]000520<stream version="2.3/basic" >
   <properties> 
     <p name="title">Waves: 50 kHz Electric Waveforms%{xCacheResInfo}</p>
     <p name="xTagWidth" type="Datum">2.0 s</p>
