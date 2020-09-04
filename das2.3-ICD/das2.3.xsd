@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!-- 
   This is a multi-root schema definition.  It will validate any one of the
-  top-level das2.3-basic stream root elements, <stream>, <packet>, <comment>
-  or <exception>.  Of course to be well-formed only *one* of the elements
-  above may form a header packet.
+  top-level das2.3 stream root elements, <stream>, <packet>, <comment> or
+  <exception>.  Of course to be well-formed only *one* of the elements above
+  may form a header packet.
 -->   
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
 
@@ -155,7 +155,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
   <!-- The regex for scientific notation is looooong, just make sure
        illegal characters are not present -->       
   <xs:restriction base="xs:string">
-    <xs:pattern value="[1-9][0-9]*,[1-9][0-9]*" />
+    <xs:pattern value="[1-9][0-9]*(\s*,[1-9][0-9]*)?" />
     <xs:whiteSpace value="collapse" />
   </xs:restriction>
 </xs:simpleType>
@@ -164,7 +164,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
   <!-- The regex for scientific notation is looooong, just make sure
        illegal characters are not present -->       
   <xs:restriction base="xs:string">
-    <xs:pattern value="[1-9][0-9]*,[1-9][0-9]*,[1-9][0-9]*" />
+    <xs:pattern value="[1-9][0-9]*(,\s*[1-9][0-9]*){0,2}" />
     <xs:whiteSpace value="collapse" />
   </xs:restriction>
 </xs:simpleType>
@@ -172,7 +172,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <!-- A variable in a physical dimension with data in the packets -->
 <xs:complexType name="PktVariable">
   <xs:sequence>
-      <xs:element name="properties" type="Properties" minOccurs="0"/>
+    <xs:element name="properties" type="Properties" minOccurs="0"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>

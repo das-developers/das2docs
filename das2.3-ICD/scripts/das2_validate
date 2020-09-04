@@ -10,7 +10,7 @@ try:
 except ImportError:
     from io import StringIO       # Python 3
 	 
-g_sSchema = 'das2.3-basic.xsd'
+g_sSchema = 'das2.3.xsd'
 
 # ########################################################################### #
 class PacketReader:
@@ -179,7 +179,9 @@ def getDatLen(packet, nPktId):
 		nItems = 1
 		if child.tag in ('yset','zset','wset'):
 			if 'nitems' in child.attrib:
-				nItems = int(child.attrib['nitems'], 10)
+				lItems = [s.strip() for s in child.attrib['nitems'].split(',')]
+				for sItem in lItems:
+					nItems *= int(sItem, 10)
 								
 		# Add sizes for all the planes, they all have the same number of items
 		# but mak have different value sizes
