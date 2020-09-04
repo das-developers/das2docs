@@ -1,13 +1,13 @@
-[00]000143<stream version="2.3">
+[00]000145<stream version="2.3">
   <properties>
     <p name="title">Voyager 1 Noise Events</p>
-	 <p name="renderer">events</p>
+    <p name="renderer">events</p>
   </properties>
 </stream>
-[01]000207<packet>
+[01]000209<packet>
   <x name="time">
     <plane role="min" type="time18" units="UTC" />
-	 <plane role="max" type="time18" units="UTC" />
+    <plane role="max" type="time18" units="UTC" />
   </x>
   <y name="event">
     <plane type="char17" units="" />

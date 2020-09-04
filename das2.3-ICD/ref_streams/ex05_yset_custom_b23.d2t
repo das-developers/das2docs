@@ -24,16 +24,16 @@
   </custom_db_info>
   
 </stream>
-[01]000945<packet custom_attrib3="test_extensibility" >
+[01]000951<packet custom_attrib3="test_extensibility" >
   <x name="time">
-  	<plane role="min" type="time24" units="UTC"/>
- </x>
+    <plane role="min" type="time24" units="UTC"/>
+  </x>
   
   <yset name="lfr_lo_e" nitems="6144">
-  	 <plane type="ascii11" units="V m**-1" />
-	 
+    <plane type="ascii11" units="V m**-1" />
+    
     <xheader name="sample_time"> 
-	   <headerplane offsets="time" minval="0.0" interval="20.0" units="μs" />
+      <headerplane offsets="time" minval="0.0" interval="20.0" units="μs" />
     </xheader>
   </yset>
   

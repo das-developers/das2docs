@@ -11,17 +11,17 @@
     <p name="sourceId">das2_ascii</p>
   </properties>
 </stream>
-[01]000316<packet>
+[01]000325<packet>
   <x name="time">
     <plane role="min" type="time24" units="UTC"/>
   </x>
   
   <yset name="lfr_lo_e" nitems="6144">
     <plane type="ascii11" units="V m**-1" />
-	 
-	 <xheader name="sample_time"> 
-	 	<headerplane units="μs" offsets="time" minval="0.0" interval="20.0"/>
-	 </xheader>
+    
+    <xheader name="sample_time"> 
+      <headerplane units="μs" offsets="time" minval="0.0" interval="20.0"/>
+    </xheader>
   </yset>
   
 </packet>
