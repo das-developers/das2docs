@@ -5,28 +5,37 @@
     <p name="xMonotonic" type="boolean">true</p>
   </properties>
 </stream>
-[01]000625<packet>
-  <xcoord name="time" type="time22" units="UTC"/>
+[01]000678<packet>
+  <x name="time">
+    <plane type="time22" units="UTC" />
+  </x>
   
-  <ydata name="radius" type="ascii11" units="">
-    <properties><p name="yLabel">R!DE!N</p></properties>
-  </ydata>
+  <y name="radius">
+    <plane type="ascii11" units="" />
+    <properties>
+	   <p name="yLabel">R!DE!N</p>
+	 </properties>
+  </y>
   
-  <ydata name="mag_lat" type="ascii11" units="degrees">
-    <properties><p name="yLabel">MLat</p></properties>
-  </ydata>
+  <y name="mag_lat">
+    <plane type="ascii11" units="degrees" />
+    <properties>
+	   <p name="yLabel">MLat</p>
+	 </properties>
+  </y>
   
-  <ydata name="mag_lt" type="ascii11" units="degrees">
+  <y name="mag_lt">
+    <plane  type="ascii11" units="degrees" />
     <properties>
       <p name="yLabel">MLT</p>
       <p name="yCircular" type="doubleRange">0.0 360.0</p>
     </properties>
-  </ydata>
+  </y>
   
-  <ydata type="ascii11" name="l_shell" units="">
+  <y name="l_shell">
+    <plane type="ascii11" units="" />
     <properties><p name="yLabel">L</p></properties>
-  </ydata>
-  
+  </y>
 </packet>
 |01|000066|2013-001T01:00:00.000  5.782e+00 -1.276e+01  3.220e+00  6.079e+00
 |01|000066|2013-001T01:01:00.000  5.782e+00 -1.274e+01  3.232e+00  6.077e+00

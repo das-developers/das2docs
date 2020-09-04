@@ -97,7 +97,7 @@
     <plane role="center" type="ascii11" units="km" />
   </y>
   
-  <zset group="Ex" name="hfr_mid_hres" nitems="96">
+  <zset group="Ex" name="hfr_mid_hres" nitems="96" >
     <plane role="center" type="ascii12" units="V**2 m**-2 Hz**-1" />
     
     <xvals name="sample_time">
@@ -111,7 +111,7 @@
       </plane>
     </xvals> 
     
-    <yvals name="frequency">
+    <yvals name="frequency" planes="2">
       <planevals role="center" units="Hz">
         3685.61,   3862.97,   4048.88,   4243.73,   4447.96,   4662.01,   4886.37,   5121.52,
         5367.99,   5626.33,   5897.09,   6180.89,   6478.34,   6790.11,   7116.88,   7459.37,

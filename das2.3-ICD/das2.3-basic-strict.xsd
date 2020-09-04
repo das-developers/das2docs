@@ -9,7 +9,7 @@
   points.  Only defined das2.3-basic elements and attributes are allowed.
   Though clients should not use this schema for standard operations it is 
   useful when debugging new streams.
--->   
+-->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
 
 <!-- Stream headers ======================================================= -->
@@ -81,21 +81,33 @@
 
 <!-- Packet Headers ======================================================= -->
 
-<!-- The purposes for values of a coordinate -->
-<xs:simpleType name="CoordRole">
-  <xs:restriction base="xs:string">
-    <xs:enumeration value="center" />
-    <xs:enumeration value="offset" />
-    <xs:enumeration value="min" />
-    <xs:enumeration value="max" />
-    <xs:enumeration value="width" />
-    <xs:enumeration value="min_error" />
-    <xs:enumeration value="max_error" />    
-  </xs:restriction>
-</xs:simpleType>
+<!-- Each packet header defines a das2 dataset and how it appears in the data
+     stream.  The object containment hirearchy is depected in the middle of
+     the reference poster, 
+     
+        https://das2.org/das2_AGU2019.pdf 
+         
+     and summarized below:
+     
+       Stream
+         |
+         |- Dataset 1
+         |- Dataset 2
+         |- Dataset 3
+         |- .....
+       
+       Dataset  <packet>
+         |
+         |- Physical Dimension   <x> <yset> <y> <zset> <z> <wset> <w>
+             |                   <xvals> <yvals> <zvals>
+             |
+             |- Variable         <plane>, <planevals>
+                 |
+                 |- Quantities   specified by attributes                 
+-->
 
 <!-- The purposes for values of a plane -->
-<xs:simpleType name="PlaneRole">
+<xs:simpleType name="VarRole">
   <xs:restriction base="xs:string">
     <xs:enumeration value="center" />
     <xs:enumeration value="average" />
@@ -109,124 +121,121 @@
   </xs:restriction>
 </xs:simpleType>
 
-<!-- Value Types -->
+<!-- Data value types, sizes and formats -->
 <xs:simpleType name="StorageType">
   <xs:restriction base="xs:string">
       <xs:pattern 
-value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_int8|ascii[1-9][0-9]*|time[1-9][0-9]*" />
+value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_int8|ascii[1-9][0-9]*|time[1-9][0-9]*|char[1-9][0-9]*" />
    </xs:restriction>
 </xs:simpleType>
 
-
-<!-- Single Value Per Row Plane -->
-<xs:complexType name="StreamCoord">
-  <xs:sequence minOccurs="0">
-    <xs:element name="properties" type="Properties" minOccurs="0"/>
-    <!-- Can extend with other elements here, but they can't be from this namespace -->
-    <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
-    <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
-  </xs:sequence>
-  <xs:attribute name="name" type="ArrayName" use="required" />
+<!-- A variable in a physical dimension with data in the packets -->
+<xs:complexType name="PktVariable">
   <xs:attribute name="type" type="StorageType"  use="required" />
   <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="role" type="CoordRole"  default="center" />
+  <xs:attribute name="role" type="VarRole" default="center" />
+</xs:complexType>
+
+
+<!-- Single value per packet physical dimensions -->
+<xs:complexType name="PointPhysDim">
+  <xs:sequence>
+    <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="8"/>
+    <xs:element name="properties" type="Properties" minOccurs="0"/>
+  </xs:sequence>
+  <xs:attribute name="name" type="ArrayName" use="required" />
+  <xs:attribute name="group" type="ArrayName" />
+  <xs:attribute name="planes" type="xs:positiveInteger" default="1" />  
 </xs:complexType>
 
 <xs:simpleType name="Values">
+  <!-- The regex for scientific notation is looooong, just make sure
+       illegal characters are not present -->       
   <xs:restriction base="xs:string">
     <xs:pattern value="[0-9\+-,\.eE\s]*" />
     <xs:whiteSpace value="collapse" />
   </xs:restriction>
 </xs:simpleType>
 
-<!-- The regex for scientific notation is looooong, just make sure
-     illegal characters are not present -->       
-<xs:complexType name="HdrCoord">
+<!-- A variable in a physical dimension with data right in the header -->
+<xs:complexType name="HdrVariable">
   <xs:simpleContent>
     <xs:extension base="Values" >
-      <xs:attribute name="name" type="ArrayName" use="required" />
-      <xs:attribute name="units" type="xs:token" use="required" />
-      <xs:attribute name="minval" type="xs:double" />
-      <xs:attribute name="maxval" type="xs:double" />
+      <xs:attribute name="units"    type="xs:token" use="required" />
+      <xs:attribute name="role"     type="VarRole"  default="center" />
+      <xs:attribute name="minval"   type="xs:double" />
       <xs:attribute name="interval" type="xs:double" />
-      <xs:attribute name="role" type="CoordRole"  default="center" />
     </xs:extension>
   </xs:simpleContent>  
 </xs:complexType>
 
-<xs:complexType name="Plane" >
+<!-- A physical dimension with data included right in the header -->
+<xs:complexType name="HdrPhysDim">
   <xs:sequence>
-    <xs:element name="properties" type="Properties" minOccurs="0"/>
+    <xs:element name="planevals" type="HdrVariable" minOccurs="1" maxOccurs="9"/>
   </xs:sequence>
-  <xs:attribute name="role" type="PlaneRole" use="required" />
-  <xs:attribute name="units" type="xs:token" use="required" />
-  <xs:attribute name="type" type="StorageType"  use="required" />
+  <xs:attribute name="name"   type="ArrayName" use="required" />
+  <xs:attribute name="planes" type="xs:positiveInteger" default="1" />  
 </xs:complexType>
 
-<!-- Multi Value Per Row, Spanning 1 Coordinate -->
-<xs:complexType name="YData">
-  <xs:sequence minOccurs="0">
-    <xs:element name="xcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
+<!-- Multi Value per packet physical dimenions, spanning 1 coordinate -->
+<xs:complexType name="YSetPhysDim">
+  <xs:sequence>
+    <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="9"/>  
+    <xs:element name="xvals" type="HdrPhysDim" minOccurs="1" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
-    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
   </xs:sequence>
   <xs:attribute name="name" type="ArrayName" use="required" />
   <xs:attribute name="group" type="ArrayName" />
-  <xs:attribute name="type" type="StorageType"  use="required" />
-  <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="role" type="PlaneRole"  default="center" />
+  <xs:attribute name="planes" type="xs:positiveInteger" default="1" />  
   <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
 </xs:complexType>
 
-<!-- Multi Value Per Row, Spanning 2 Coordinates -->
-<xs:complexType name="ZData">
+<!-- Multi Value per packet physical dimenions, spanning 2 coordinates -->
+<xs:complexType name="ZSetPhysDim">
   <xs:sequence>
-    <xs:element name="xcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
-    <xs:element name="ycoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
+    <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="9"/>
+    <xs:element name="xvals" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
+    <xs:element name="yvals" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
-    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
   </xs:sequence>
   <xs:attribute name="name" type="ArrayName" use="required" />
   <xs:attribute name="group" type="ArrayName" />
-  <xs:attribute name="type" type="StorageType"  use="required" />
-  <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="role" type="PlaneRole"  default="center" />
   <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
+  <xs:attribute name="planes" type="xs:positiveInteger" default="1" />
 </xs:complexType>
 
-
-<!-- Multi Value Per Row, Spanning 3 Coordinates -->
-<xs:complexType name="WData">
+<!-- Multi Value per packet physical dimenions, spanning 3 coordinate -->
+<xs:complexType name="WSetPhysDim">
   <xs:sequence>
-    <xs:element name="xcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
-    <xs:element name="ycoord" type="HdrCoord" minOccurs="0" maxOccurs="8" />
-    <xs:element name="zcoord" type="HdrCoord" minOccurs="0" maxOccurs="8"/>
+    <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="9"/>
+    <xs:element name="xvals" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
+    <xs:element name="yvals" type="HdrPhysDim" minOccurs="0" maxOccurs="1" />
+    <xs:element name="zvals" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
-    <xs:element name="plane" type="Plane" minOccurs="0" maxOccurs="8"/>
   </xs:sequence>
   <xs:attribute name="name" type="ArrayName" use="required" />
   <xs:attribute name="group" type="ArrayName" />
-  <xs:attribute name="type" type="StorageType"  use="required" />
-  <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="role" type="PlaneRole"  default="center" />
   <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
+  <xs:attribute name="planes" type="xs:positiveInteger" default="1" />
 </xs:complexType>
 
 
-<xs:element name="packet">
-  <xs:complexType>
+<xs:complexType name="Dataset">
     <xs:sequence>
-      <xs:element name="xcoord" type="StreamCoord" minOccurs="1" maxOccurs="unbounded"/>
-      <xs:element name="ycoord" type="StreamCoord" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="zcoord" type="StreamCoord" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="ydata" type="YData" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="zdata" type="ZData" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="wdata" type="WData" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-      </xs:choice>
+      <xs:element name="x"    type="PointPhysDim" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element name="yset" type="YSetPhysDim"  minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="y"    type="PointPhysDim" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="zset" type="ZSetPhysDim"  minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="z"    type="PointPhysDim" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="wset" type="WSetPhysDim"  minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="w"    type="PointPhysDim" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="properties" type="Properties" minOccurs="0"/>
     </xs:sequence>  
-  </xs:complexType>
-</xs:element>
+</xs:complexType>
+
+<!-- A packet may have one of these as the top level element -->
+<xs:element name="packet" type="Dataset" />
 
 <!-- Exceptions =========================================================== -->
 
