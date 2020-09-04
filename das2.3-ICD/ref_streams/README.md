@@ -10,7 +10,7 @@ schema document except for [ex05_yset_custom_b23.d2t](ex05_yset_custom_b23.d2t) 
 using the standard extendable schema [das2.3-basic.xsd](../das2.3-basic.xsd).  Validation
 was performed using the included python3 script [das2_validate](../scripts/das2_validate).
 
-| Fil                                                     | Source                     | Plot Type  | Description    |
+| File                                                    | Source                     | Plot Type  | Description    |
 | :------------------------------------------------------ | :------------------------- | :--------- | :------------- |
 | [ex01_y_ephem_b23.d2t](ex01_y_ephem_b23.d2t)            | Van Allen Probe A location | Multi-line    | MLT values occupy a circular space,<br>Provides data packet lengths |
 | [ex02_y_reduced_b23.d2t](ex02_y_reduced_b23.d2t)        | Van Allen Probe A location | Multi-line    | Statistics planes caused by passing<br> through a stream reducer |

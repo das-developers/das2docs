@@ -38,13 +38,15 @@
 <xs:simpleType name="PropName">
   <xs:restriction base="xs:string">
     <xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.-,:]+"/>
+    <xs:maxLength value="63"/> <!-- leave rooom for null char -->
   </xs:restriction>
 </xs:simpleType>
 
 <!-- Array Names -->
-<xs:simpleType name="ArrayName">
+<xs:simpleType name="PhysDimName">
   <xs:restriction base="xs:string">
     <xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.]+"/>
+    <xs:maxLength value="63"/> <!-- leave rooom for null char -->
    </xs:restriction>
 </xs:simpleType>
 
@@ -74,7 +76,7 @@
       <xs:element name="properties" type="Properties" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
     <xs:attribute name="version" type="StreamVersion" use="required" />
-    <xs:attribute name="primaryGroup" type="ArrayName" />
+    <xs:attribute name="primaryGroup" type="PhysDimName" />
   </xs:complexType>
 </xs:element>
 
@@ -110,6 +112,7 @@
 <xs:simpleType name="VarRole">
   <xs:restriction base="xs:string">
     <xs:enumeration value="center" />
+    <xs:enumeration value="offset" />    
     <xs:enumeration value="average" />
     <xs:enumeration value="count" />
     <xs:enumeration value="min" />
@@ -143,8 +146,8 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="name" type="ArrayName" use="required" />
-  <xs:attribute name="group" type="ArrayName" />
+  <xs:attribute name="name" type="PhysDimName" use="required" />
+  <xs:attribute name="group" type="PhysDimName" />
   <xs:attribute name="planes" type="xs:positiveInteger" default="1" />  
 </xs:complexType>
 
@@ -165,6 +168,7 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
       <xs:attribute name="role"     type="VarRole"  default="center" />
       <xs:attribute name="minval"   type="xs:double" />
       <xs:attribute name="interval" type="xs:double" />
+      <xs:attribute name="offsets"  type="PhysDimName" />
     </xs:extension>
   </xs:simpleContent>  
 </xs:complexType>
@@ -173,8 +177,9 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
 <xs:complexType name="HdrPhysDim">
   <xs:sequence>
     <xs:element name="planevals" type="HdrVariable" minOccurs="1" maxOccurs="9"/>
+	 <xs:element name="properties" type="Properties" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="name"   type="ArrayName" use="required" />
+  <xs:attribute name="name"   type="PhysDimName" use="required" />
   <xs:attribute name="planes" type="xs:positiveInteger" default="1" />  
 </xs:complexType>
 
@@ -185,8 +190,8 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:element name="xvals" type="HdrPhysDim" minOccurs="1" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="name" type="ArrayName" use="required" />
-  <xs:attribute name="group" type="ArrayName" />
+  <xs:attribute name="name" type="PhysDimName" use="required" />
+  <xs:attribute name="group" type="PhysDimName" />
   <xs:attribute name="planes" type="xs:positiveInteger" default="1" />  
   <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
 </xs:complexType>
@@ -199,8 +204,8 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:element name="yvals" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="name" type="ArrayName" use="required" />
-  <xs:attribute name="group" type="ArrayName" />
+  <xs:attribute name="name" type="PhysDimName" use="required" />
+  <xs:attribute name="group" type="PhysDimName" />
   <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
   <xs:attribute name="planes" type="xs:positiveInteger" default="1" />
 </xs:complexType>
@@ -214,8 +219,8 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:element name="zvals" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="name" type="ArrayName" use="required" />
-  <xs:attribute name="group" type="ArrayName" />
+  <xs:attribute name="name" type="PhysDimName" use="required" />
+  <xs:attribute name="group" type="PhysDimName" />
   <xs:attribute name="nitems" type="xs:positiveInteger" default="1" />
   <xs:attribute name="planes" type="xs:positiveInteger" default="1" />
 </xs:complexType>

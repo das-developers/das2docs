@@ -12,7 +12,7 @@
     <plane type="time22" units="UTC" />
   </x>
   
-  <y name="radius" planes="4">
+  <y name="radius">
     <plane type="ascii11" units="" />
     <plane role="max" units="" type="ascii11" />
     <plane role="min" units="" type="ascii11" />
@@ -22,7 +22,7 @@
     </properties>
   </y>
   
-  <y name="mag_lat" planes="4">
+  <y name="mag_lat">
     <plane type="ascii11" units="degrees" />
     <plane role="max" units="degrees" type="ascii11" />
     <plane role="min" units="degrees" type="ascii11" />
@@ -32,7 +32,7 @@
     </properties>
   </y>
   
-  <y name="mag_lt" planes="4">
+  <y name="mag_lt">
     <plane type="ascii11" units="degrees" />
     <plane role="max" units="degrees" type="ascii11" />
     <plane role="min" units="degrees" type="ascii11" />
@@ -43,7 +43,7 @@
     </properties>
   </y>
   
-  <y name="l_shell" planes="4">
+  <y name="l_shell">
     <plane type="ascii11" units="" />
     <plane role="max" units="" type="ascii11" />
     <plane role="min" units="" type="ascii11" />

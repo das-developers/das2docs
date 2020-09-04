@@ -24,12 +24,18 @@
   </custom_db_info>
   
 </stream>
-[01]000882<packet custom_attrib3="test_extensibility" >
-  <xcoord name="time" role="min" type="time24" units="UTC"/>
+[01]000939<packet custom_attrib3="test_extensibility" >
+  <x name="time">
+  	<plane role="min" type="time24" units="UTC"/>
+ </x>
   
-  <ydata name="lfr_lo_e" type="ascii11" units="V m**-1" nitems="6144">
-    <xcoord name="sample_time" role="offset" minval="0.0" interval="20.0" units="μs" />
-  </ydata>
+  <yset name="lfr_lo_e" nitems="6144">
+  	 <plane type="ascii11" units="V m**-1" />
+	 
+    <xvals name="sample_time"> 
+	   <planevals offsets="time" minval="0.0" interval="20.0" units="μs" />
+    </xvals>
+  </yset>
   
   <!-- Custom extension data for some site-specific use outside the scope
        of das2 tools, which will shamelessly drop this extra element.
