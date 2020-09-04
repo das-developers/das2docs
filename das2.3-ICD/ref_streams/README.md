@@ -1,4 +1,4 @@
-# Reference streams in das2.3-basic format
+# Das2.3 Reference Streams
 
 The stream files in this directory are provided for testing new das2.3 parsers.  All 
 were taken from mission data and provide real world processing examples.  Though 
