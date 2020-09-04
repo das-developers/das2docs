@@ -32,8 +32,8 @@ das2 streams are:
     site customizations may be added in the future without breaking
     standard/older tools.
 
-  * The W axis has been added so that we can stream volumetric data
-    such as Mars Express radargrams.
+  * The W axis has been added for streaming volumetric data, such as 
+    Mars Express radargrams.
 
   * Data joins across packets are now explicit using the group 
     attribute, this way each array can have a unique name in the
