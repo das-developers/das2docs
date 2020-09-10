@@ -1,11 +1,13 @@
-[00]000201<stream version="2.3/basic">
+|Hs|0|273|<stream version="2.3/basic" lang="en">
   <properties>
-    <p name="title">Van Allen Probe A - Location</p>
+    <p name="title">Van Allen Probe A - Location
+      <alt lang="fr">Sonde A Van Allen - Situation</alt>
+    </p>
     <p name="xLabel">UTC</p>
     <p name="xMonotonic" type="boolean">true</p>
   </properties>
 </stream>
-[01]000686<packet>
+|Hx|1|686|<packet>
   <x name="time">
     <plane type="time22" units="UTC" />
   </x>
@@ -37,6 +39,6 @@
     <properties><p name="yLabel">L</p></properties>
   </y>
 </packet>
-|01|000066|2013-001T01:00:00.000  5.782e+00 -1.276e+01  3.220e+00  6.079e+00
-|01|000066|2013-001T01:01:00.000  5.782e+00 -1.274e+01  3.232e+00  6.077e+00
-|01|000066|2013-001T01:02:00.000  5.781e+00 -1.272e+01  3.244e+00  6.076e+00
+|Dx|1|66|2013-001T01:00:00.000  5.782e+00 -1.276e+01  3.220e+00  6.079e+00
+|Dx|1|66|2013-001T01:01:00.000  5.782e+00 -1.274e+01  3.232e+00  6.077e+00
+|Dx|1|66|2013-001T01:02:00.000  5.781e+00 -1.272e+01  3.244e+00  6.076e+00
