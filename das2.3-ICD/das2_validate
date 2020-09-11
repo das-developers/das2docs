@@ -62,7 +62,7 @@ def isDataPacket(sTag):
 	return sTag in ('Dx','Qd')
 
 def isAnyHeader(sTag):
-	return sTag not in ('Dx', 'Qd')
+	return (sTag not in ('Dx', 'Qd'))
 
 def isDataHeader(sTag):
 	return sTag in ('Hx','Qp')
@@ -355,7 +355,7 @@ class PacketReader:
 				sTag, nPktId, self.nOffset
 			))
 			
-		if isAnyHeader(sTag[0]):
+		if isAnyHeader(sTag):
 			# In a header packet, insure it decodes to text
 			sDoc = None
 			try:
