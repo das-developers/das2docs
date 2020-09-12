@@ -1,4 +1,5 @@
-|Hs|0|273|<stream version="2.3/basic" lang="en">
+|Hs|0|274|
+<stream version="2.3/basic" lang="en">
   <properties>
     <p name="title">Van Allen Probe A - Location
       <alt lang="fr">Sonde A Van Allen - Situation</alt>
@@ -7,35 +8,36 @@
     <p name="xMonotonic" type="boolean">true</p>
   </properties>
 </stream>
-|Hx|1|686|<packet>
-  <x name="time">
-    <plane type="time23" units="UTC" />
+|Hx|1|687|
+<packet>
+  <x pdim="time">
+    <array type="time23" units="UTC" />
   </x>
   
-  <y name="radius">
-    <plane type="ascii11" units="" />
+  <y pdim="radius">
+    <array type="ascii11" units="" />
     <properties>
       <p name="yLabel">R!DE!N</p>
     </properties>
   </y>
   
-  <y name="mag_lat">
-    <plane type="ascii11" units="degrees" />
+  <y pdim="mag_lat">
+    <array type="ascii11" units="degrees" />
     <properties>
       <p name="yLabel">MLat</p>
     </properties>
   </y>
   
-  <y name="mag_lt">
-    <plane  type="ascii11" units="degrees" />
+  <y pdim="mag_lt">
+    <array  type="ascii11" units="degrees" />
     <properties>
       <p name="yLabel">MLT</p>
       <p name="yCircular" type="doubleRange">0.0 360.0</p>
     </properties>
   </y>
   
-  <y name="l_shell">
-    <plane type="ascii11" units="" />
+  <y pdim="l_shell">
+    <array type="ascii11" units="" />
     <properties><p name="yLabel">L</p></properties>
   </y>
 </packet>

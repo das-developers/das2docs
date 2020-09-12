@@ -1,4 +1,5 @@
-|Hs|0|532|<stream version="2.3/basic">
+|Hs|0|533|
+<stream version="2.3/basic">
   <properties>
     <p name="title">Waves: 50 kHz Electric Waveforms%{xCacheResInfo}</p>
     <p name="xTagWidth" type="Datum">2.0 s</p>
@@ -11,17 +12,18 @@
     <p name="sourceId">das2_ascii</p>
   </properties>
 </stream>
-|Hx|1|0325|<packet>
-  <x name="time">
-    <plane role="min" type="time24" units="UTC"/>
+|Hx|1|0318|
+<packet>
+  <x pdim="time">
+    <array use="min" type="time24" units="UTC" />
   </x>
   
-  <yset name="lfr_lo_e" nitems="6144">
-    <plane type="ascii11" units="V m**-1" />
+  <yset pdim="Ey" nitems="6144">
+    <array type="ascii11" units="V m**-1" />
     
-    <xheader name="sample_time"> 
-      <headerplane units="μs" offsets="time" minval="0.0" interval="20.0"/>
-    </xheader>
+    <xcoord pdim="time"> 
+      <sequence use="center" units="μs" minval="0.0" interval="20.0" />
+    </xcoord>
   </yset>
   
 </packet>

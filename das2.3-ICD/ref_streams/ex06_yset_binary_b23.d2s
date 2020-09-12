@@ -1,4 +1,5 @@
-|Hs||520|<stream version="2.3/basic" >
+|Hs||521|
+<stream version="2.3/basic" >
   <properties> 
     <p name="title">Waves: 50 kHz Electric Waveforms%{xCacheResInfo}</p>
     <p name="xTagWidth" type="Datum">2.0 s</p>
@@ -11,14 +12,14 @@
     <p name="sourceId">das2_ascii</p>
   </properties>
 </stream>
-|Hx|1|46503|<packet>
-  <x name="time"><plane type="time24" units="UTC" /></x>
-  <yset name="lfr_lo_e" nitems="6144">
-    <plane type="little_endian_real4" units="V m**-1" />
-    <xheader name="samp_time">
-      <headerplane offsets="time" units="Î¼s">
-      <values>
-       0,    20,    40,    60,    80,   100,   120,   140,   160,   180,
+|Hx|1|46463|
+<packet>
+  <x pdim="time"><array use="min" type="time24" units="UTC" /></x>
+  <yset pdim="Ey" shape="*;6144">
+    <array type="little_endian_real4" units="V m**-1" />
+    <xcoord pdim="time">
+      <values use="offset" units="Î¼s">
+         0,    20,    40,    60,    80,   100,   120,   140,   160,   180,
        200,   220,   240,   260,   280,   300,   320,   340,   360,   380,   
        400,   420,   440,   460,   480,   500,   520,   540,   560,   580,   
        600,   620,   640,   660,   680,   700,   720,   740,   760,   780,   
@@ -634,8 +635,7 @@
     122600,122620,122640,122660,122680,122700,122720,122740,122760,122780,
     122800,122820,122840,122860
     </values>
-    </headerplane>
-    </xheader>
+    </xcoord>
   </yset>
 </packet>
 |Dx|1|24600|2013-282T15:31:53.397   Ú	¬·y:·H^û·ÿŽ„·Gˆ%¸Gˆ%¸Û¿16Û¿16ÿŽ„·ÿŽ„·Z¦Ó··‚9¸…M¸·‚9¸Z¦Ó·H^û··‚9¸±–¸Ú	¬·»Ø¶H^û·›Ža¸®žu¸…M¸·‚9¸·‚9¸Gˆ%¸…M¸Z¦Ó·Gˆ%¸Gˆ%¸®žu¸›Ža¸®žu¸Œ£¸·‚9¸±–¸H^û·Z¦Ó·±–¸y:·nÍó68ý‹Ú78”ü<8ñ

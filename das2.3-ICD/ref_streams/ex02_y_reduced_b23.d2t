@@ -1,4 +1,5 @@
-|Hs||321|<stream version="2.3/basic">
+|Hs||322|
+<stream version="2.3/basic">
   <properties>
     <p name="title">Van Allen Probe A - Location</p>
     <p name="xLabel">UTC</p>
@@ -7,47 +8,48 @@
     <p name="summary">Original reader output bin averaged with statistics</p>
   </properties>
 </stream>
-|Hx|1|1332|<packet>
-  <x name="time">
-    <plane type="time22" units="UTC" />
+|Hx|1|1321|
+<packet>
+  <x pdim="time">
+    <array type="time22" units="UTC" />
   </x>
   
-  <y name="radius">
-    <plane type="ascii11" units="" />
-    <plane role="max" units="" type="ascii11" />
-    <plane role="min" units="" type="ascii11" />
-    <plane role="std_dev" units="" type="ascii11" />
+  <y pdim="radius">
+    <array type="ascii11" units="" />
+    <array use="max" units="" type="ascii11" />
+    <array use="min" units="" type="ascii11" />
+    <array use="std_dev" units="" type="ascii11" />
     <properties>
       <p name="yLabel">R!DE!N</p>
     </properties>
   </y>
   
-  <y name="mag_lat">
-    <plane type="ascii11" units="degrees" />
-    <plane role="max" units="degrees" type="ascii11" />
-    <plane role="min" units="degrees" type="ascii11" />
-    <plane role="std_dev" units="" type="ascii11" />
+  <y pdim="mag_lat">
+    <array type="ascii11" units="degrees" />
+    <array use="max" units="degrees" type="ascii11" />
+    <array use="min" units="degrees" type="ascii11" />
+    <array use="std_dev" units="" type="ascii11" />
     <properties>
       <p name="yLabel">MLat</p>
     </properties>
   </y>
   
-  <y name="mag_lt">
-    <plane type="ascii11" units="degrees" />
-    <plane role="max" units="degrees" type="ascii11" />
-    <plane role="min" units="degrees" type="ascii11" />
-    <plane role="std_dev" units="" type="ascii11" />
+  <y pdim="mag_lt">
+    <array type="ascii11" units="degrees" />
+    <array use="max" units="degrees" type="ascii11" />
+    <array use="min" units="degrees" type="ascii11" />
+    <array use="std_dev" units="" type="ascii11" />
     <properties>
       <p name="yLabel">MLT</p>
       <p name="yCircular" type="doubleRange">0.0 360.0</p>
     </properties>
   </y>
   
-  <y name="l_shell">
-    <plane type="ascii11" units="" />
-    <plane role="max" units="" type="ascii11" />
-    <plane role="min" units="" type="ascii11" />
-    <plane role="std_dev" units="" type="ascii11" />
+  <y pdim="l_shell">
+    <array type="ascii11" units="" />
+    <array use="max" units="" type="ascii11" />
+    <array use="min" units="" type="ascii11" />
+    <array use="std_dev" units="" type="ascii11" />
     <properties>
       <p name="yLabel">L</p>
     </properties>

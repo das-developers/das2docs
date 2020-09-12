@@ -183,8 +183,9 @@ class PacketReader:
 			return self._nextStaticTag(x4)
 			
 		raise ValueError(
-			"Unknown packet start character %s at offset %d"%(
-			str(x4[0:1]), self.nOffset - 4
+			"Unknown packet tag character %s at offset %d, %s"%(
+			str(x4[0:1]), self.nOffset - 4, 
+			"(Hint: are the type lengths correct in the data header packet?)"
 		))
 	
 
@@ -370,7 +371,7 @@ class PacketReader:
 			# If this packet is too short, complain
 			if nLen < self.lPktSize[nPktId]:
 				raise ValueError(
-					"Short data packet expected %d bytes found %d for %s|%d at offset %d"%(
+					"Short data packet expected %d bytes found %d for |%s|%d| at offset %d"%(
 					self.lPktSize[nPktId], nLen, sTag, nPktId, self.nOffset
 				))
 				
@@ -414,10 +415,16 @@ class Das22HdrParser:
 			))
 				
 		if sName != 'properties':
-			return self._builder.start(sName, dAttrs)
+			el = self._builder.start(sName, dAttrs)
+			el.sourceline = self._parser.CurrentLineNumber
+			return el
 		
-		# Break out weird properity attributes into sub elements
-		self._builder.start('properties', {})
+		# Break out weird properity attributes into sub elements.  Fortunatly
+		# lxml has a sourceline property we can set manually on elements since
+		# we are creating them directly instead of the SAX parser.
+		# (Thanks lxml!, Ya'll rock!)
+		el = self._builder.start('properties', {})
+		el.sourceline = self._parser.CurrentLineNumber
 		
 		for sKey in dAttrs:
 			d = {'name':None}
@@ -441,8 +448,9 @@ class Das22HdrParser:
 				d['name'] = sKey
 			
 			# Put the 'p' elements directly into the tree.  This keeps real
-			# p elements from getting included.		
-			self._builder.start('p', d)
+			# p elements from getting included, don't forget the sourceline
+			el = self._builder.start('p', d)
+			el.sourceline = self._parser.CurrentLineNumber
 			self._builder.data(dAttrs[sKey].strip())
 			self._builder.end('p')
 		
@@ -517,7 +525,7 @@ def getDataLen(elPkt, sStreamVer, nPktId):
 			# Add sizes for all the planes, they all have the same number of items
 			# but may have different value sizes
 			for subChild in child:
-				if subChild.tag == 'plane':
+				if subChild.tag == 'array':
 			
 					# Get the value type
 					if 'type' not in subChild.attrib:
@@ -533,7 +541,29 @@ def getDataLen(elPkt, sStreamVer, nPktId):
 			raise ValueError("Unknown das2 stream version %s"%sStreamVer)
 	
 	return nSize
-	
+
+# ########################################################################### #
+
+def prnErrorContext(curPkt, nLine):
+	sHdr = curPkt.content.decode('utf-8')
+	lLines = sHdr.split('\n')
+
+	for i in range(len(lLines)):
+		# Trim long lines at 80 characters
+		if len(lLines[i]) > 80:
+			sLine = lLines[i][:76] + " ..."
+		else:
+			sLine = lLines[i]
+			
+		# If we have a valid line number only print within 6 lines each 
+		# way of the header
+		if (nLine > 0) and abs(nLine - (i+1)) > 6: continue
+		
+		if i + 1 == nLine:
+			perr("    %3d---> %s"%(i+1, sLine))
+		else:
+			perr("    %3d     %s"%(i+1, sLine))
+
 
 # ########################################################################### #
 def main(lArgs):
@@ -595,6 +625,9 @@ def main(lArgs):
 		perr("Validating: %s"%sFile)
 		fIn = open(sFile, 'rb')
 	
+		# Same parsing state info to help with exception output
+		curPkt = None
+		sCurType = None
 		dDataPktCount = {}
 		
 		try:
@@ -603,7 +636,7 @@ def main(lArgs):
 			sStreamContent, sStreamVer, bVarTags = reader.streamType()
 			
 			if sStreamContent != 'das2':
-				perr("%s: Is a %s stream, expected a das2 stream"%sStreamContent)
+				perr("This is a %s stream, expected a das2 stream"%sStreamContent)
 				return 5
 			
 			if args.sExpect and (args.sExpect != sStreamVer):
@@ -615,7 +648,8 @@ def main(lArgs):
 			schema = getSchema(args.sSchemaDir, args.bStrict, args.sSchema, sStreamVer)
 			
 			for pkt in reader:
-			
+				curPkt = pkt
+				
 				if isDataPacket(pkt.tag):
 					dDataPktCount[pkt.id] += 1
 					continue
@@ -632,7 +666,7 @@ def main(lArgs):
 					docTree = etree.parse(fPkt)
 				
 				elRoot = docTree.getroot()
-				sType = elRoot.tag
+				sCurType = elRoot.tag
 				
 				schema.assertValid(docTree)
 				
@@ -641,23 +675,56 @@ def main(lArgs):
 					dDataPktCount[pkt.id] = 0
 					nDatLen = getDataLen(elRoot, sStreamVer, pkt.id)
 					reader.setDataSize(pkt.id, nDatLen)
-					perr("ID: %s <%s> [OKAY] (data size %d bytes)"%(pkt.id, sType, nDatLen))
+					perr("|%s| ID %s %s header [OKAY] (data size %d bytes)"%(
+						pkt.tag, pkt.id, sCurType, nDatLen
+					))
 				else:
-					perr("ID: %s <%s> [OKAY]"%(pkt.id, sType))
+					perr("|%s| ID %s %s header [OKAY]"%(pkt.tag, pkt.id, sCurType))
+					
+				curPkt = None
+				sCurType = None
 		
-		except(ValueError, etree.XMLSyntaxError, etree.DocumentInvalid) as e:
-			perr("Error in %s: %s"%(sFile, str(e)))
+		except(
+			ValueError, etree.XMLSyntaxError, etree.DocumentInvalid, 
+			xml.parsers.expat.ExpatError
+		) as e:
+			if curPkt:
+				if sCurType:
+					perr("|%s| ID %s <%s> [ERROR] (context follows)"%(curPkt.tag, curPkt.id, sCurType))
+				else:
+					perr("|%s| ID %s data [ERROR]"%(pkt.tag, pkt.id))
+				
+			# Try to get last line with an error
+			nLine = -1
+			if isinstance(e, (etree.XMLSyntaxError, etree.DocumentInvalid)):
+				#perr(e.error_log)
+				nLine = e.error_log[-1].line
+			elif isinstance(e, xml.parsers.expat.ExpatError):
+				nLine = e.lineno
+			
+			# Print context if we can get it
+			if curPkt and isAnyHeader(curPkt.tag):
+				try:
+					prnErrorContext(curPkt, nLine)
+				except:
+					# Assumption here
+					perr("Header packet %s%d is not valid UTF-8 text"%(
+						curPkt.tag, curPkt.id))
+			
+			perr(str(e))
+			#perr(type(e), "\n   dir:", dir(e.error_log[-1]), '\n   msg:', e.error_log[-1].message)
+			#perr("Error in %s:\n%s"%(sFile, str(e)))
 			return 5
 					
 		for nId in dDataPktCount:
-			perr("ID: %d has %d data packets [OKAY]"%(nId, dDataPktCount[nId]))
+			perr("|Dx| ID %d %d data packets [OKAY]"%(nId, dDataPktCount[nId]))
 		
 		if args.bStrict:
-			perr('%s: validates as a strict %s version %s stream without extensions\n'%(
-				sFile, sStreamContent, sStreamVer))
+			perr('Stream validates as a strict %s version %s stream without extensions\n'%(
+				sStreamContent, sStreamVer))
 		else:	
-			perr('%s: validates as a %s version %s stream\n'%(
-				sFile, sStreamContent, sStreamVer))
+			perr('Stream validates as a %s version %s stream\n'%(
+				sStreamContent, sStreamVer))
 	
 	if len(args.lFiles) > 1:
 		perr("All %d stream files validated"%len(args.lFiles))

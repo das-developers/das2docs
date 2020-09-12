@@ -92,7 +92,7 @@
     </xs:sequence>
     <xs:attribute name="version" type="StreamVersion" use="required" />
     <xs:attribute name="primaryGroup" type="PhysDimName" />
-	 <xs:attribute name="lang" type="ISO639_1" default="en"/>
+    <xs:attribute name="lang" type="ISO639_1" default="en"/>
     <xs:anyAttribute processContents="skip" />
   </xs:complexType>
 </xs:element>
@@ -158,29 +158,11 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
   </xs:restriction>
 </xs:simpleType>
 
-<xs:simpleType name="Items1">
+<xs:simpleType name="Items">
   <!-- The regex for scientific notation is looooong, just make sure
        illegal characters are not present -->       
   <xs:restriction base="xs:string">
     <xs:pattern value="[1-9][0-9]*" />
-    <xs:whiteSpace value="collapse" />
-  </xs:restriction>
-</xs:simpleType>
-
-<xs:simpleType name="Items2">
-  <!-- The regex for scientific notation is looooong, just make sure
-       illegal characters are not present -->       
-  <xs:restriction base="xs:string">
-    <xs:pattern value="[1-9][0-9]*(\s*,[1-9][0-9]*)?" />
-    <xs:whiteSpace value="collapse" />
-  </xs:restriction>
-</xs:simpleType>
-
-<xs:simpleType name="Items3">
-  <!-- The regex for scientific notation is looooong, just make sure
-       illegal characters are not present -->       
-  <xs:restriction base="xs:string">
-    <xs:pattern value="[1-9][0-9]*(,\s*[1-9][0-9]*){0,2}" />
     <xs:whiteSpace value="collapse" />
   </xs:restriction>
 </xs:simpleType>
@@ -195,99 +177,104 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
   </xs:sequence>
   <xs:attribute name="type" type="StorageType"  use="required" />
   <xs:attribute name="units" type="xs:token"  use="required" />
-  <xs:attribute name="role" type="VarRole" default="center" />
+  <xs:attribute name="use" type="VarRole" default="center" />
 </xs:complexType>
 
 
 <!-- Single value per packet physical dimensions -->
 <xs:complexType name="PointPhysDim">
   <xs:sequence>
-    <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="8"/>
+    <xs:element name="array" type="PktVariable" minOccurs="1" maxOccurs="8"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="group" type="PhysDimName" />  
-  <xs:attribute name="name" type="PhysDimName" use="required" />
+  <xs:attribute name="name" type="PhysDimName" />  
+  <xs:attribute name="pdim" type="PhysDimName" use="required" />
 </xs:complexType>
 
-<!-- A variable in a physical dimension with data right in the header -->
-<xs:complexType name="HdrVariable">
-  <xs:sequence>
-    <xs:element name="values" type="Values" minOccurs="0" />
-    <xs:element name="properties" type="Properties" minOccurs="0" />
-    <!-- Can extend with other elements here, but they can't be from this namespace -->
-    <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
-    <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
-  </xs:sequence>
+<!-- An array variable in the header -->
+<xs:complexType name="HdrVarVals">
+  <xs:simpleContent>
+     <xs:extension base="Values" >
+	    <xs:attribute name="use"     type="VarRole"  default="center" />
+	    <xs:attribute name="units"    type="xs:token" use="required" />
+       <xs:attribute name="repeat"   type="xs:positiveInteger" />
+	  </xs:extension>
+  </xs:simpleContent>
+</xs:complexType>
+
+<!-- A sequence variable in the header -->
+<xs:complexType name="HdrVarSeq">
+  <xs:attribute name="use"      type="VarRole"  default="center" />
   <xs:attribute name="units"    type="xs:token" use="required" />
-  <xs:attribute name="role"     type="VarRole"  default="center" />
-  <xs:attribute name="minval"   type="xs:double" />
-  <xs:attribute name="interval" type="xs:double" />
-  <xs:attribute name="offsets"  type="PhysDimName" />
-  <xs:attribute name="count"    type="xs:positiveInteger" />
-  <xs:attribute name="repeat"   type="xs:positiveInteger" />
+  <xs:attribute name="minval"   type="xs:double" use="required"/>
+  <xs:attribute name="interval" type="xs:double" use="required"/>
+  <xs:attribute name="repeat"   type="xs:positiveInteger" default="1"/>
 </xs:complexType>
 
 <!-- A physical dimension with data included right in the header -->
 <xs:complexType name="HdrPhysDim">
   <xs:sequence>
-    <xs:element name="headerplane" type="HdrVariable" minOccurs="1" maxOccurs="9"/>
+    <xs:choice minOccurs="1" maxOccurs="9">
+      <xs:element name="values" type="HdrVarVals"/>
+      <xs:element name="sequence" type="HdrVarSeq"/> 
+    </xs:choice>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="name"   type="PhysDimName" use="required" />
+  <xs:attribute name="pdim"   type="PhysDimName" use="required" />
 </xs:complexType>
 
 <!-- Multi Value per packet physical dimenions, spanning 1 coordinate -->
 <xs:complexType name="YSetPhysDim">
   <xs:sequence>
-    <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="9"/>  
-    <xs:element name="xheader" type="HdrPhysDim" minOccurs="1" maxOccurs="1"/>
+    <xs:element name="array" type="PktVariable" minOccurs="1" maxOccurs="9"/>  
+    <xs:element name="xcoord" type="HdrPhysDim" minOccurs="1" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="group" type="PhysDimName" />
-  <xs:attribute name="name" type="PhysDimName" use="required" />
-  <xs:attribute name="nitems" type="Items1" use="required" />
+  <xs:attribute name="name" type="PhysDimName" />
+  <xs:attribute name="pdim" type="PhysDimName" use="required" />
+  <xs:attribute name="nitems" type="Items" use="required" />
 </xs:complexType>
 
 <!-- Multi Value per packet physical dimenions, spanning 2 coordinates -->
 <xs:complexType name="ZSetPhysDim">
   <xs:sequence>
-    <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="9"/>
-    <xs:element name="xheader" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
-    <xs:element name="yheader" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
+    <xs:element name="array" type="PktVariable" minOccurs="1" maxOccurs="9"/>
+    <xs:element name="xcoord" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
+    <xs:element name="ycoord" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="group" type="PhysDimName" />
-  <xs:attribute name="name" type="PhysDimName" use="required" />
-  <xs:attribute name="nitems" type="Items2" use="required" />
+  <xs:attribute name="name" type="PhysDimName" />
+  <xs:attribute name="pdim" type="PhysDimName" use="required" />
+  <xs:attribute name="nitems" type="Items" use="required" />
 </xs:complexType>
 
 <!-- Multi Value per packet physical dimenions, spanning 3 coordinate -->
 <xs:complexType name="WSetPhysDim">
   <xs:sequence>
-    <xs:element name="plane" type="PktVariable" minOccurs="1" maxOccurs="9"/>
-    <xs:element name="xheader" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
-    <xs:element name="yheader" type="HdrPhysDim" minOccurs="0" maxOccurs="1" />
-    <xs:element name="zheader" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
+    <xs:element name="array" type="PktVariable" minOccurs="1" maxOccurs="9"/>
+    <xs:element name="xcoord" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
+    <xs:element name="ycoord" type="HdrPhysDim" minOccurs="0" maxOccurs="1" />
+    <xs:element name="zcoord" type="HdrPhysDim" minOccurs="0" maxOccurs="1"/>
     <xs:element name="properties" type="Properties" minOccurs="0"/>
     <!-- Can extend with other elements here, but they can't be from this namespace -->
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="group" type="PhysDimName" />
-  <xs:attribute name="name" type="PhysDimName" use="required" />
-  <xs:attribute name="nitems" type="Items3" use="required" />
+  <xs:attribute name="name" type="PhysDimName" />
+  <xs:attribute name="pdim" type="PhysDimName" use="required" />
+  <xs:attribute name="nitems" type="Items" use="required" />
 </xs:complexType>
 
 

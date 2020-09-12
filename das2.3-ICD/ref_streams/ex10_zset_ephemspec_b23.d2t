@@ -1,4 +1,5 @@
-[00]000380<stream version="2.3/basic" >
+|Hs||381|
+<stream version="2.3/basic" >
   <properties>
     <p name="xTagWidth" type="Datum">128.000000 s</p>
     <p name="zFill" type="double">-1.000000e+31</p>
@@ -8,8 +9,9 @@
     <p name="zValidMin" type="double">0.0</p>
   </properties>
 </stream>
-[11]000579<packet>
-  <xref name="time" type="time22" units="UTC" />
+|Hx|11|579|
+<packet>
+  <x name="time" type="time22" units="UTC" />
   <ydat name="rad"  type="ascii12" units="Rs" >
     <properties><p name="yLabel">R!bS!n</p></properties>
   </ydat>
@@ -31,7 +33,7 @@
     <yoffset role="width" units="Hz" min="5.6" interval="0" />
   </zdat>
 </packet>
-:11:2017-258T10:00:04.253  4.3571E-10  8.0073E-10  5.0914E-10  3.3413E-10  6.0447E-10  6.8080E-10  1.0220E-09 -5.8152E-10 -7.7796E-10 -3.1899E-10 -3.2557E-10  2.4430E-10  1.0952E-10  9.4252E-11  1.8861E-11  9.9667E-12
+|Dx|11|2017-258T10:00:04.253  4.3571E-10  8.0073E-10  5.0914E-10  3.3413E-10  6.0447E-10  6.8080E-10  1.0220E-09 -5.8152E-10 -7.7796E-10 -3.1899E-10 -3.2557E-10  2.4430E-10  1.0952E-10  9.4252E-11  1.8861E-11  9.9667E-12
 :11:2017-258T10:00:20.253  1.5735E-10  1.4738E-10  1.5536E-10  7.4525E-11  6.7197E-11  1.9436E-11  6.8350E-11  2.4371E-11  2.4585E-11  2.1867E-11  4.9731E-11  2.6286E-11  1.2585E-11  1.9234E-11  2.5070E-11 -9.3797E-12
 [12]000865<packet>
   <xref name="time" type="time22" units="UTC" />
