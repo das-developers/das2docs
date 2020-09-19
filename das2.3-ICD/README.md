@@ -1,4 +1,4 @@
-# Schemas, validators, stream examples and control documents for das2.3
+# Das2.3 - Control Documents, Examples, Schemas, and Validators
 
 This project is in progress.  Though the ICD covers more aspects of the das2
 system then the stream format, updates to the stream format and it's 
@@ -62,18 +62,18 @@ Validation was performed using the included python3 script
 
 | File                                                    | Source                     | Plot Type  | Description    |
 | :------------------------------------------------------ | :------------------------- | :--------- | :------------- |
-| [ex01_y_ephem_b23.d2t](streams/ex01_y_ephem_b23.d2t)            | Van Allen Probe A location | Multi-line    | MLT values occupy a circular space,<br>Provides data packet lengths |
-| [ex02_y_reduced_b23.d2t](streams/ex02_y_reduced_b23.d2t)        | Van Allen Probe A location | Multi-line    | Statistics planes caused by passing<br> through a stream reducer |
-| [ex03_y_events_b23.d2t](streams/ex03_y_events_b23.d2t)          | Voyager Events List        | Named-events  | Character data with min-max times |
-| [ex04_yset_waveform_b23.d2t](streams/ex04_yset_waveform_b23.d2t)| Juno Waves 50 kHz Burst    | Single-line   | Efficent waveforms using time offsets |
-| [ex05_yset_custom_b23.d2t](streams/ex05_yset_custom_b23.d2t)    | Juno Waves 50 kHz Burst    | Single-line   | Extending headers with user-defined<br>elements |
-| [ex06_yset_binary_b23.d2s](streams/ex06_yset_binary_b23.d2s)    | Juno Waves 50 KHz Burst    | Single-line   | Using explicit X-offsets,<br>Binary data packets |
-| [ex07_z_satter_b23.d2t](streams/ex07_z_satter_b23.d2t)          | MEX MARSIS Plasma Density  | Color-scatter | Scatter data in polar coordinates |
-| [ex08_zset_dynaspec_b23.d2t](streams/ex08_zset_dynaspec_b23.d2t)| Galileo PWS Survey         | Spectrogram   | Sweep frequency reciever output |
-| [ex09_zset_multispec_b23.d2t](streams/ex09_zset_multispec_b23.d2t)| Cassini RPWS Survey      | Spectrogram   | Covering frequency space via multiple<br>receivers |
-| [ex10_zset_ephemspec_b23.d2t](streams/ex10_zset_ephemspec_b23.d2t)| Cassini RPWS Survey      | Spectrogram   | Adds location data to survey values |
-| [ex11_zset_wanderspc_b23.d2t](streams/ex11_zset_wanderspc_b23.d2t)| Juno Waves Shifted Burst | Spectrogram   | Spectra from an Fce tracking mixer |
-| [ex12_wset_sounder_b23.d2t](streams/ex12_wset_sounder_b23.d2t)  | MEX MARSIS Radargram       | Volume-slice  | Data values as a function of three<br>coordinates |
+| [ex01_y_ephem_2.3.d2t](streams/ex01_y_ephem_2.3.d2t)            | Van Allen Probe A location | Multi-line    | MLT values occupy a circular space,<br>Provides data packet lengths |
+| [ex02_y_reduced_2.3.d2t](streams/ex02_y_reduced_2.3.d2t)        | Van Allen Probe A location | Multi-line    | Statistics planes caused by passing<br> through a stream reducer |
+| [ex03_y_events_2.3.d2t](streams/ex03_y_events_2.3.d2t)          | Voyager Events List        | Named-events  | Character data with min-max times |
+| [ex04_yset_waveform_2.3.d2t](streams/ex04_yset_waveform_2.3.d2t)| Juno Waves 50 kHz Burst    | Single-line   | Efficent waveforms using time offsets |
+| [ex05_yset_custom_2.3.d2t](streams/ex05_yset_custom_2.3.d2t)    | Juno Waves 50 kHz Burst    | Single-line   | Extending headers with user-defined<br>elements |
+| [ex06_yset_binary_2.3.d2s](streams/ex06_yset_binary_2.3.d2s)    | Juno Waves 50 KHz Burst    | Single-line   | Using explicit X-offsets,<br>Binary data packets |
+| [ex07_z_satter_2.3.d2t](streams/ex07_z_satter_2.3.d2t)          | MEX MARSIS Plasma Density  | Color-scatter | Scatter data in polar coordinates |
+| [ex08_zset_dynaspec_2.3.d2t](streams/ex08_zset_dynaspec_2.3.d2t)| Galileo PWS Survey         | Spectrogram   | Sweep frequency reciever output |
+| [ex09_zset_multispec_2.3.d2t](streams/ex09_zset_multispec_2.3.d2t)| Cassini RPWS Survey      | Spectrogram   | Covering frequency space via multiple<br>receivers |
+| [ex10_zset_ephemspec_2.3.d2t](streams/ex10_zset_ephemspec_2.3.d2t)| Cassini RPWS Survey      | Spectrogram   | Adds location data to survey values |
+| [ex11_zset_wanderspc_2.3.d2t](streams/ex11_zset_wanderspc_2.3.d2t)| Juno Waves Shifted Burst | Spectrogram   | Spectra from an Fce tracking mixer |
+| [ex12_wset_sounder_2.3.d2t](streams/ex12_wset_sounder_2.3.d2t)  | MEX MARSIS Radargram       | Volume-slice  | Data values as a function of three<br>coordinates |
 
 
 # Das2.2 Reference Streams
@@ -85,7 +85,7 @@ we understand that devoting resources to retrofitting older servers is
 not always possible, nor wise.  Given these realities, new das2.3 parsers
 are asked to maintain support for das2.2 streams **indefinitily**.
 
-To support backwards compatibility the validator script [das2_validate] 
+To support backwards compatibility the validator script [das2_validate](das2_validate) 
 also reads and checks das2.2 streams.  Since das2.2 did not follow XML
 convertions regarding namespaces, the validator internally translates
 the older `<properties>` elements during parsing into a form that can be
