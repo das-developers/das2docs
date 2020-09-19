@@ -12,10 +12,10 @@
     <p name="sourceId">das2_ascii</p>
   </properties>
 </stream>
-|Hx|1|46463|
+|Hx|1|46462|
 <packet>
   <x pdim="time"><array use="min" type="time24" units="UTC" /></x>
-  <yset pdim="Ey" shape="*;6144">
+  <yset pdim="Ey" nitems="6144">
     <array type="little_endian_real4" units="V m**-1" />
     <xcoord pdim="time">
       <values use="offset" units="μs">

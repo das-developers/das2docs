@@ -1,4 +1,4 @@
-[00]000198<stream compression="false" version="2.2" >
+[00]000197<stream compression="none" version="2.2" >
   <properties Datum:xTagWidth="128.000000 s"
               double:zFill="-1.000000e+31"
               String:sourceId="das2_from_tagged_das1"/>

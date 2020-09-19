@@ -30,7 +30,7 @@ def getSchema(sSchemaDir, bStrict, sForceSchema, sStreamVer):
 	global g_dSchemas
 	
 	if (sStreamVer, bStrict) in g_dSchemas:
-		return g_dSchemas[sStreamVer]
+		return g_dSchemas[(sStreamVer, bStrict)]
 	
 	# If a fixed schema is given we have to load that
 	if sForceSchema:
@@ -711,9 +711,13 @@ def main(lArgs):
 					perr("Header packet %s%d is not valid UTF-8 text"%(
 						curPkt.tag, curPkt.id))
 			
-			perr(str(e))
-			#perr(type(e), "\n   dir:", dir(e.error_log[-1]), '\n   msg:', e.error_log[-1].message)
-			#perr("Error in %s:\n%s"%(sFile, str(e)))
+			# Hack the non-existent 'p' element back out of any das2.2 error messages
+			sErr = str(e)
+			if sStreamVer == '2.2' and sErr.startswith("Element 'p',"):
+				sFind ="Element 'p', attribute 'type': [facet 'enumeration'] The value"
+				sRep = "Element 'properties', the attribute qualifier"
+				sErr = sErr.replace(sFind, sRep)
+			perr(sErr)
 			return 5
 					
 		for nId in dDataPktCount:

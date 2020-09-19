@@ -1,4 +1,4 @@
-|Hs||1072|
+|Hs||1073|
 <stream version="2.3/basic" custom_attrib1="test_extensibility">
   <properties>
     <p name="title">Waves: 50 kHz Electric Waveforms%{xCacheResInfo}</p>
@@ -25,7 +25,7 @@
   </custom_db_info>
   
 </stream>
-|Hx|1|945|
+|Hx|1|931|
 <packet custom_attrib3="test_extensibility" >
   <x pdim="time">
     <array use="min" type="time24" units="UTC"/>
