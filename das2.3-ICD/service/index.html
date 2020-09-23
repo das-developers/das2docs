@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>das2 validation service</title>
+   <meta name="description" content="Prototype das2.2 and das2.3 stream validator">
+   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+   <link rel="manifest" href="/site.webmanifest">
+   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	 <link rel="stylesheet" type="text/css" href="das2validate.css">
+   <meta name="msapplication-TileColor" content="#ffc40d">
+   <meta name="theme-color" content="#ffffff">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<header>
+  <div class="horizontal">
+  <a href="https://das2.org"><img alt="das2 logo" src="../das2new-300.png"
+    style="width:auto;height:5rem;flex-basis:5rem"></a>
+  <img alt="spectrogram" src="../spectrogram.gif" style=
+    "min-width:0;width:90%;height:5rem;flex-basis:100%">
+  </div>
+  <h1><i>das2</i> Validation Service (pre-alpha version)</h1>
+  <p>
+	Check the format of a das2.2 or das2.3 stream.  Determine if data
+	can be read from a given catalog node.
+  </p>
+  
+</header>
+
+<div class="two-column">
+
+<!-- Left Column ======================================================= -->
+<div class="left-column">
+
+
+<h2>Validate via File Upload</h2>
+<p>
+Upload a stream file for validation.  Typically these will have the file
+name pattern *.<b>d2s</b> or *.<b>d2t</b>.  Only the first megabyte of 
+the uploaded file will be scanned.
+</p>
+<form enctype="multipart/form-data" method="post"
+      action="https://space.physics.uiowa.edu/das/validate" >
+
+<div class="flex-container">
+<input type="file" name="file" required>
+<input type="submit" value="Validate">
+</div>
+<input type="checkbox" name="strict" value="yes" checked>
+Treat extensions as errors (strict mode)
+<!--
+<input type="checkbox" name="src_node" value="yes">
+Check here if testing a catalog data source node.<br>
+-->
+<input hidden="hidden" name="what" value="file">
+</form>
+<br>
+
+
+<h2>Validate via a URI (<i>not yet implemented</i>)</h2>
+<p>
+Validate a stream source online.  Query parameters will be required for
+most direct das2 server URLs, but ususally will not be required for 
+Catalog URIs.  Only the first megabyte of output will be scanned.
+</p>
+<form action="https://space.physics.uiowa.edu/das/validate" method="get">
+
+<div class="flex-container">
+<label>URL or Catalog URI</label><input type="url" name="url" required disabled>
+</div>
+<input type="checkbox" name="src_node" value="yes" disabled>
+Check here if testing a catalog data source node.
+
+<p>
+<b>(Optional)</b> If this data source requires a username and password you
+may enter it below.  If the data source does not require a password, don't
+enter one.  This validation service does <b>not</b> record your personal
+information.
+</p>
+
+<div class="flex-container">
+Login <input type="text" name="username" disabled> &nbsp;
+Password <input type="password" name="password" disabled>
+</div>
+
+<div class="center">
+<input type="submit" value="Validate" disabled>
+</div>
+
+<input hidden="hidden" name="what" value="url">
+</form>
+
+<br>
+
+</div>  <!-- end left column -->
+
+<div class="right-column">
+
+
+<h2>Applicable Documents</h2>
+
+<p>Das2.2 streams are defined by the 
+<a href="https://das2.org/Das2.2.2-ICD_2017-05-09.pdf">
+das2.2.2 Interface Reference.</a>
+</p>
+
+<p>Das2.3 streams are defined by the 
+<a href="https://github.com/das-developers/das2docs/raw/properties/das2.3-ICD/das2.3-ICD.pdf">das2.3-ICD</a>, 
+document in the 
+<a href="https://github.com/das-developers/das2docs">das-developers / das2docs</a>
+repository at github.com.
+</p>
+
+<p>
+As of Jan. 2020, the das2 federated catalog system is in a prototyping phase
+(version 0.6) and no interface control document exists to define valid 
+catalog node files.  For now, this service can be used to determine
+if a node definition can be parsed by existing software.  A node file that 
+cannot be parsed is not necessarily invalid.
+</p>
+
+<h2>Reference Streams for Parsers</h2>
+<p>The following streams can be used to test new parser implementations.</p>
+
+
+<h2>Standard Identifiers</h2> 
+<p>
+<i>das2</i> text stream: <code><b>text/vnd.das2.das2stream; charset=utf-8</b></code> (*.d2t)<br>
+<i>das2</i> binary stream: <code><b>application/vnd.das2.das2stream</code></b> (*.d2s)<br>
+<br>
+Text Q-Stream: <b><code>text/vnd.das2.qstream; charset=utf-8</code></b>(*.qdt)<br>
+Binary Q stream: <code><b>application/vnd.das2.qstream</b></code>(*.qds)<br>
+<br>
+<i>das2</i> source root URI: <b><code>tag:das2.org,2012:</code></b></p>
+</p>
+<!--
+<p>
+<b><code>application/vnd.autoplot.vap+xml</code></b><br>
+Autoplot Settings Files (*.vap)
+</p>
+
+<p>
+<b><code>application/vnd.autoplot.pngwalk</code></b><br>
+Autoplot PNGwalk Files (*.pngwalk)
+</p>
+-->
+</div>  <!-- end right column -->
+
+</div> <!-- end two-column -->
+
+
+  <img alt="---" src="../img/wedge.png" style="width:100%;height:3px;">
+
+  <p style="text-align:center;">
+  &quot;<i>das</i> ist good&quot; -- Ian Dury and the Blockheads
+  </p>
+
+  
+  <footer style="font-size:0.7rem;font-style:italic;">
+    <a href=
+    "https://validator.w3.org/nu/?doc=http%3A%2F%2Fdas2.org%2F"><img
+    style="border:0;height:48px;width:48px;float:right"
+    alt="Valid HTML 5 CSS 3" src="/img/HTML5_1Color_Black-48.png"></a>
+    Last modified Sunday, 31-Mar-2019 20:31:41 CDT<br>
+    &copy; <a href="https://www.uiowa.edu/">The University of Iowa</a>
+    1994&#160;-&#160;2019. All rights reserved.<br>
+    <a href="https://github.com/orgs/das-developers/people">
+    Contact information</a>. Send
+    questions or comments to the <a href=
+    "&#109;aiLtO&#58;larry&#45;granroth&#64;uiowa&#46;ed&#117;">
+    site custodian</a><a href=
+    "/cgi-bin/e-mail-directory">.</a><br>
+    The <a href="https://physics.uiowa.edu/">Department of Physics
+    &amp; Astronomy</a>, <a href="https://clas.uiowa.edu/">College of
+    Liberal Arts &amp; Sciences</a>.
+  </footer>
+  
+</body>
+
+
+<!--
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Das2 Validator</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="https://das2.org/cat_resource/style.css" />
+</head>
+
+
+<body>
+<div class="header">
+	<div class="hdr_left">
+		<a href="https://das2.org">
+		<img src="https://das2.org/cat_resource/das2logo_rv.png" alt="Das2" width="80" height="80">
+		</a>
+	</div>
+	<div class="hdr_center">
+	<h2 class="yellow">Stream Validation Service</h2>
+   Check the format of a das2.2 or das2.3 stream
+	</div>
+	<div class="hdr_right">
+
+
+	   <a href="https://github.com/das-developers/das2docs/blob/properties/das2.3-ICD/das2.3-ICD.pdf">
+         <h3>das2.3-ICD (2019)</h3></a>
+		<a href="https://das2.org/Das2.2.2-ICD_2017-05-09.pdf">
+		<h4>das2.2-ICD (2017)</h4></a>
+
+
+	</div>
+</div>
+
+<div class="indent30_div">
+<div class="datasrc_div">
+
+<h3><span>Vaildate by File Upload</span></h3>
+
+<br>
+<br>
+
+<h3><span>Validate by data source URL</span></h3>
+
+
+<br>
+<br>
+
+<h3><span>Validate by Catalog URI</span></h3>
+
+<br>
+<br>
+
+</div>
+</div>
+
+<h3>Example Stream Files</h3>
+
+<br>
+<br>
+
+
+<div class="footer">
+  <div>More information about das2 can be found at:
+  <a href="http://das2.org/">http://das2.org/</a>.</div>
+  <div></div>
+  <div>Das developers at <a href="https://github.com/das-developers">Github.com</a> and 
+  <a href="https://anaconda.org/DasDevelopers/">Anaconda.org</a></div>
+</div>
+</body>
+</html>
+
+-->

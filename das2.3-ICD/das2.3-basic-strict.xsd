@@ -37,7 +37,7 @@
 <!-- The names for properties, no spaces, may include special chars ".,-_:" -->
 <xs:simpleType name="PropName">
   <xs:restriction base="xs:string">
-    <xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.-,:]+"/>
+    <xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.-,:]*"/>
     <xs:maxLength value="63"/> <!-- leave rooom for null char -->
   </xs:restriction>
 </xs:simpleType>
@@ -45,7 +45,7 @@
 <!-- Array Names -->
 <xs:simpleType name="PhysDimName">
   <xs:restriction base="xs:string">
-    <xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.]+"/>
+    <xs:pattern value="[a-zA-Z][a-zA-Z0-9_\.]*"/>
     <xs:maxLength value="63"/> <!-- leave rooom for null char -->
    </xs:restriction>
 </xs:simpleType>

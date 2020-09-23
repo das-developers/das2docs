@@ -22,7 +22,7 @@
     <array type="ascii11" units="V m**-1" />
     
     <xcoord pdim="time"> 
-      <sequence use="center" units="μs" minval="0.0" interval="20.0" />
+      <sequence use="offset" units="μs" minval="0.0" interval="20.0" />
     </xcoord>
   </yset>
   
