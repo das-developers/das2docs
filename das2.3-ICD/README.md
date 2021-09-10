@@ -68,7 +68,7 @@ Validation was performed using the included python3 script
 | [ex04_yset_waveform_2.3.d2t](streams/ex04_yset_waveform_2.3.d2t)| Juno Waves 50 kHz Burst    | Single-line   | Efficent waveforms using time offsets |
 | [ex05_yset_custom_2.3.d2t](streams/ex05_yset_custom_2.3.d2t)    | Juno Waves 50 kHz Burst    | Single-line   | Extending headers with user-defined<br>elements |
 | [ex06_yset_binary_2.3.d2s](streams/ex06_yset_binary_2.3.d2s)    | Juno Waves 50 KHz Burst    | Single-line   | Using explicit X-offsets,<br>Binary data packets |
-| [ex07_z_satter_2.3.d2t](streams/ex07_z_satter_2.3.d2t)          | MEX MARSIS Plasma Density  | Color-scatter | Scatter data in polar coordinates |
+| [ex07_z_scatter_2.3.d2t](streams/ex07_z_scatter_2.3.d2t)          | MEX MARSIS Plasma Density  | Color-scatter | Scatter data in polar coordinates |
 | [ex08_zset_dynaspec_2.3.d2t](streams/ex08_zset_dynaspec_2.3.d2t)| Galileo PWS Survey         | Spectrogram   | Sweep frequency reciever output |
 | [ex09_zset_multispec_2.3.d2t](streams/ex09_zset_multispec_2.3.d2t)| Cassini RPWS Survey      | Spectrogram   | Covering frequency space via multiple<br>receivers |
 | [ex10_zset_ephemspec_2.3.d2t](streams/ex10_zset_ephemspec_2.3.d2t)| Cassini RPWS Survey      | Spectrogram   | Adds location data to survey values |
