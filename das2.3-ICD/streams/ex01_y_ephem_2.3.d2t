@@ -8,28 +8,28 @@
     <p name="xMonotonic" type="boolean">true</p>
   </properties>
 </stream>
-|Hx|1|687|
+|Hx|1|742|
 <packet>
   <x pdim="time">
-    <array type="time23" units="UTC" />
+    <array type="isotime" encode="text23" units="UTC" />
   </x>
   
   <y pdim="radius">
-    <array type="ascii11" units="" />
+    <array type="real" encode="text11" units="" />
     <properties>
       <p name="yLabel">R!DE!N</p>
     </properties>
   </y>
   
   <y pdim="mag_lat">
-    <array type="ascii11" units="degrees" />
+    <array type="real" encode="text11" units="degrees" />
     <properties>
       <p name="yLabel">MLat</p>
     </properties>
   </y>
   
   <y pdim="mag_lt">
-    <array  type="ascii11" units="degrees" />
+    <array type="real" encode="text11" units="degrees" />
     <properties>
       <p name="yLabel">MLT</p>
       <p name="yCircular" type="doubleRange">0.0 360.0</p>

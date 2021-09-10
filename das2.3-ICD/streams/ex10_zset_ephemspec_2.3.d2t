@@ -1,27 +1,25 @@
-|Hs||381|
+|Hs||377|
 <stream version="2.3/basic" >
   <properties>
     <p name="xTagWidth" type="Datum">128.000000 s</p>
-    <p name="zFill" type="double">-1.000000e+31</p>
+    <p name="zFill" type="real">-1.000000e+31</p>
     <p name="sourceId">das2_from_tagged_das1</p>
     <p name="yLabel">Frequency (Hz)</p>
     <p name="zLabel">Spectral Density (V!a2!n m!a-2!n Hz!a-1!n)</p>
-    <p name="zValidMin" type="double">0.0</p>
+    <p name="zValidMin" type="real">0.0</p>
   </properties>
 </stream>
 |Hx|11|579|
 <packet>
-  <x name="time" type="time22" units="UTC" />
-  <ydat name="rad"  type="ascii12" units="Rs" >
+  <x name="time" encode="text22" type="isotime"/>
+  <y name="rad"  encode="text12" units="Rs" >
     <properties><p name="yLabel">R!bS!n</p></properties>
-  </ydat>
-  </ydat name="long" type="ascii12" units="degrees" >
+  </y>
+  </y name="long" encode="text12" units="degrees" >
     <properties><p name="yLabel">R!bS!n</p></properties>
-  </ydat>
-  </ydat>
+  </y>
   
-  </ydat>
-  <zdat group="Ex" name="mfr_low" type="ascii12" units="V**2 m**-2 Hz**-1" nitems="16">
+  <zset group="Ex" name="mfr_low" encode="text12" units="V**2 m**-2 Hz**-1" nitems="16">
     <xoffset role="center" units="s">
       0.0,  1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,
       8.0,  9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0
@@ -36,8 +34,8 @@
 |Dx|11|2017-258T10:00:04.253  4.3571E-10  8.0073E-10  5.0914E-10  3.3413E-10  6.0447E-10  6.8080E-10  1.0220E-09 -5.8152E-10 -7.7796E-10 -3.1899E-10 -3.2557E-10  2.4430E-10  1.0952E-10  9.4252E-11  1.8861E-11  9.9667E-12
 :11:2017-258T10:00:20.253  1.5735E-10  1.4738E-10  1.5536E-10  7.4525E-11  6.7197E-11  1.9436E-11  6.8350E-11  2.4371E-11  2.4585E-11  2.1867E-11  4.9731E-11  2.6286E-11  1.2585E-11  1.9234E-11  2.5070E-11 -9.3797E-12
 [12]000865<packet>
-  <xref name="time" type="time22" units="UTC" />
-  <zdat group="Ex" name="mfr_mid" type="ascii12" units="V**2 m**-2 Hz**-1" nitems="32">
+  <xref name="time" encode="text22" type="isotime" />
+  <zdat group="Ex" name="mfr_mid" encode="text12" units="V**2 m**-2 Hz**-1" nitems="32">
     <xoffset role="center" units="s">
        0.0,  0.5,  1.0,  1.5,  2.0,  2.5,  3.0,  3.5,  
        4.0,  4.5,  5.0,  5.5,  6.0,  6.5,  7.0,  7.5,
@@ -56,8 +54,8 @@
 :12:2017-258T10:00:04.253  7.4986E-11  1.8524E-11  4.7624E-11  4.8864E-11  8.0628E-11  6.9599E-11  2.4758E-11  1.5553E-11  1.4008E-11  1.2538E-11  1.3265E-11  1.7415E-11  2.7328E-12  1.2326E-12  5.8361E-12 -7.2608E-12 -5.2147E-12 -1.5260E-12 -1.6789E-12 -8.4204E-13 -1.5826E-12 -5.4165E-13  6.4139E-13  4.1180E-13  5.3394E-13  1.0279E-12  2.3014E-13  5.4111E-13  3.6513E-13  1.2015E-13  2.2044E-13  6.0022E-14
 :12:2017-258T10:00:20.253  1.4021E-12  7.0498E-12  3.6380E-12  1.4428E-12  7.3070E-13  7.3583E-13  2.1296E-13  1.0359E-12  7.1883E-13  1.4439E-12  3.7256E-12  1.3901E-12  9.9538E-13  1.7466E-12  2.1495E-12  1.6077E-12  1.3659E-12  2.2497E-13  2.7390E-12  3.8456E-13  1.0194E-12  7.5538E-13  1.2920E-12  3.9295E-13  4.3239E-13  4.3174E-13  4.5067E-13  1.1611E-12  9.2680E-13  1.6355E-13  9.4279E-14 -7.6377E-14
 [13]000907<packet>
-  <xref name="time" type="time22" units="UTC" />
-  <zdat group="Ex" name="mfr_hi" type="ascii12" units="V**2 m**-2 Hz**-1" nitems="32">
+  <xref name="time" encode="text22" type="isotime" />
+  <zdat group="Ex" name="mfr_hi" encode="text12" units="V**2 m**-2 Hz**-1" nitems="32">
     <xoffset role="center" units="s">
        0.00,  0.25,  0.50,  0.75, 1.00, 1.25, 1.50, 1.75,
        2.00,  2.25,  2.50,  2.75, 3.00, 3.25, 3.50, 3.75,

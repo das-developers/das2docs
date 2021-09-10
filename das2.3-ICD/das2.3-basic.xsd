@@ -19,11 +19,11 @@
 <!-- The data types for properties -->
 <xs:simpleType name="PropType">
   <xs:restriction base="xs:string">
-    <xs:enumeration value="String" />
+    <xs:enumeration value="string" />
     <xs:enumeration value="Datum" />
     <xs:enumeration value="boolean" />
-    <xs:enumeration value="int" />
-    <xs:enumeration value="double" />
+    <xs:enumeration value="integer" />
+    <xs:enumeration value="real" />
     <xs:enumeration value="DatumRange" />
     <xs:enumeration value="doubleRange" />
    </xs:restriction>
@@ -142,10 +142,17 @@
 </xs:simpleType>
 
 <!-- Data value types, sizes and formats -->
-<xs:simpleType name="StorageType">
+<xs:simpleType name="EncodeType">
   <xs:restriction base="xs:string">
       <xs:pattern 
-value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_int8|ascii[1-9][0-9]*|time[1-9][0-9]*|char[1-9][0-9]*" />
+value="real[48]|int[1248]|text[0-9]*|text\*" />
+   </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="ValueType">
+  <xs:restriction base="xs:string">
+      <xs:pattern 
+value="isotime|integer|real|string" />
    </xs:restriction>
 </xs:simpleType>
 
@@ -175,7 +182,8 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
     <xs:any namespace="##other" processContents="skip" minOccurs="0"/>
     <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
   </xs:sequence>
-  <xs:attribute name="type" type="StorageType"  use="required" />
+  <xs:attribute name="type" type="ValueType" default="real" />
+  <xs:attribute name="encode" type="EncodeType" />
   <xs:attribute name="units" type="xs:token"  use="required" />
   <xs:attribute name="use" type="VarRole" default="center" />
 </xs:complexType>
@@ -294,7 +302,9 @@ value="big_endian_real[48]|little_endian_real[48]|big_endian_int8|little_endian_
       <xs:any namespace="##local" processContents="skip" minOccurs="0"/>
       </xs:choice>
     </xs:sequence>
-  
+    
+    <xs:attribute name="delim" type="xs:string" minOccurs="0"/>
+
     <!-- Can extend with other attributes, will be skipped by schema -->
     <xs:anyAttribute processContents="skip" />
 </xs:complexType>

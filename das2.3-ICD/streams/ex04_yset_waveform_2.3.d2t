@@ -1,4 +1,4 @@
-|Js|0|533|
+|Hs|0|531|
 <stream version="2.3/basic">
   <properties>
     <p name="title">Waves: 50 kHz Electric Waveforms%{xCacheResInfo}</p>
@@ -6,20 +6,20 @@
     <p name="xLabel">SCET %{RANGE}</p>
     <p name="yLabel">E!dy!n Component (V/m)</p>
     <p name="yScaleType">linear</p>
-    <p name="yFill" type="double">-1e31</p>
+    <p name="yFill" type="real">-1e31</p>
     <p name="xCacheRange" type="DatumRange">2013-10-09T15:30:59.875 to 2013-10-09T15:33:00.124 UTC</p>
     <p name="xCacheResInfo"> </p>
     <p name="sourceId">das2_ascii</p>
   </properties>
 </stream>
-|Hx|1|0307|
+|Hx|1|315|
 <packet>
   <x pdim="time">
-    <array use="min" type="time24" units="UTC" />
+    <array use="min" type="isotime" encode="text23" units="UTC" />
   </x>
   
   <yset pdim="Ey" nitems="6144">
-    <array type="ascii11" units="V m**-1" />
+    <array encode="text11" units="V m**-1" />
     
     <xcoord pdim="time"> 
       <sequence use="offset" units="μs" minval="0.0" interval="20.0" />

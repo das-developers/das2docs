@@ -1,4 +1,4 @@
-|Hs|0|736|
+|Hs|0|734|
 <stream version="2.3/basic" primaryGroup="electric">
   <properties>
     <p name="title">Galileo PWS - LRS Electric</p>
@@ -12,17 +12,17 @@
     <p name="zLabel">Spectral Density (V!a2!n m!a-2!n Hz!a-1!n)</p>
     <p name="zScaleType">log</p>
     <p name="zRange" type="DatumRange">1.0e-17 to 1.0e-4 V**2 m**-2 Hz**-1</p>
-    <p name="zFill" type="double">0.0</p>
+    <p name="zFill" type="real">0.0</p>
   </properties>
 </stream>
-|Hx|1|3451|
+|Hx|1|3469|
 <packet>
   <x pdim="time">
-    <array use="min" type="time24" units="UTC" />
+    <array use="min" type="isotime" encode="text24" units="UTC" />
   </x>
 
   <zset pdim="electric" nitems="152">
-    <array type="ascii11" units="V**2 m**-2 Hz**-1" />
+    <array encode="text11" units="V**2 m**-2 Hz**-1" />
     
     <ycoord pdim="frequecy"> 
       <values use="center" units="Hz">

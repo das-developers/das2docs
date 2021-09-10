@@ -8,37 +8,37 @@
     <p name="summary">Original reader output bin averaged with statistics</p>
   </properties>
 </stream>
-|Hx|1|1321|
+|Hx|1|1263|
 <packet>
   <x pdim="time">
-    <array type="time22" units="UTC" />
+    <array type="isotime" encode="text22" units="UTC" />
   </x>
   
   <y pdim="radius">
-    <array type="ascii11" units="" />
-    <array use="max" units="" type="ascii11" />
-    <array use="min" units="" type="ascii11" />
-    <array use="std_dev" units="" type="ascii11" />
+    <array encode="text11" />
+    <array use="max" encode="text11" />
+    <array use="min" encode="text11" />
+    <array use="std_dev" encode="text11" />
     <properties>
       <p name="yLabel">R!DE!N</p>
     </properties>
   </y>
   
   <y pdim="mag_lat">
-    <array type="ascii11" units="degrees" />
-    <array use="max" units="degrees" type="ascii11" />
-    <array use="min" units="degrees" type="ascii11" />
-    <array use="std_dev" units="" type="ascii11" />
+    <array encode="text11" units="degrees" />
+    <array use="max" encode="text11" units="degrees" />
+    <array use="min" encode="text11" units="degrees" />
+    <array use="std_dev" encode="text11" />
     <properties>
       <p name="yLabel">MLat</p>
     </properties>
   </y>
   
   <y pdim="mag_lt">
-    <array type="ascii11" units="degrees" />
-    <array use="max" units="degrees" type="ascii11" />
-    <array use="min" units="degrees" type="ascii11" />
-    <array use="std_dev" units="" type="ascii11" />
+    <array encode="text11" units="degrees" />
+    <array use="max" encode="text11" units="degrees" />
+    <array use="min" encode="text11" units="degrees" />
+    <array use="std_dev" encode="text11" />
     <properties>
       <p name="yLabel">MLT</p>
       <p name="yCircular" type="doubleRange">0.0 360.0</p>
@@ -46,10 +46,10 @@
   </y>
   
   <y pdim="l_shell">
-    <array type="ascii11" units="" />
-    <array use="max" units="" type="ascii11" />
-    <array use="min" units="" type="ascii11" />
-    <array use="std_dev" units="" type="ascii11" />
+    <array type="ascii11" />
+    <array use="max" encode="text11" />
+    <array use="min" encode="text11" />
+    <array use="std_dev" encode="text11" />
     <properties>
       <p name="yLabel">L</p>
     </properties>

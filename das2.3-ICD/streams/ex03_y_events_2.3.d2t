@@ -6,14 +6,14 @@
   </properties>
   <other />
 </stream>
-|Hx|1|208|
+|Hx|1|249|
 <packet>
   <x pdim="time">
-    <array use="min" type="time18" units="UTC" />
-    <array use="max" type="time18" units="UTC" />
+    <array use="min" type="isotime" encode="text18" units="UTC" />
+    <array use="max" type="isotime" encode="text18" units="UTC" />
   </x>
   <y pdim="event">
-    <array type="char17" units="" />
+    <array type="string" encode="text17" />
   </y>
 </packet>
 |Dx|1|53|2012-002T04:39:50 2012-002T04:44:06 SS_BIAS_YAW     

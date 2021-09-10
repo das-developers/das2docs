@@ -1,24 +1,25 @@
 |Hs||200|<stream version="2.3/basic">
     <properties>
         <p name="wLabel">Spectral Density (V!a2!nm!a-2!nHz!a-1!n)</p>
-        <p name="wFill" type="double">-1.000000e+31</p>
+        <p name="wFill" type="real">-1.000000e+31</p>
     </properties>
 </stream>
-|Hx|1|3337|<packet>
+|Hx|1|3342|
+<packet>
     <x pdim="time">
-        <array type="time24" units="us2000" use="center"/>
+        <array type="isotime" encode="text24" use="center"/>
         <properties>
             <p name="xLabel">SCET %{RANGE}</p>
         </properties>
     </x>
     <y pdim="length">
-        <array type="ascii12" units="km" use="center"/>
+        <array encode="text12" units="km" use="center"/>
         <properties>
             <p name="yLabel">cΔt/2, Apparent altitude (km)</p>
         </properties>
     </y>
     <wset nitems="12800" pdim="e_spec_dens">
-        <array type="ascii12" units="V!a2!nm!a-2!nHz!a-1!n" use="center"/>
+        <array encode="text12" units="V!a2!nm!a-2!nHz!a-1!n" use="center"/>
         <ycoord pdim="length">
             <sequence interval="-1.3705e+01" minval="0.0000e+00"
                 units="km" use="offset"/>
